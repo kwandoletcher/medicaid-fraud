@@ -1,0 +1,775 @@
+================================================================================
+COMPREHENSIVE RESEARCH REPORT: 13 EXCLUDED HEALTHCARE PROVIDERS
+RECEIVING MEDICAID PAYMENTS POST-EXCLUSION
+================================================================================
+Report Date: February 19, 2026
+Research Method: Multi-source web research including DOJ press releases, OIG
+enforcement actions, state medical board records, news articles, NPI registry,
+and court records.
+
+================================================================================
+1. WE CARE TRANSPORTATION
+   Overland Park, KS | NPI 1982736492 | Excluded 2010
+   Type: Non-Emergency Medical Transportation (NEMT)
+================================================================================
+
+NPPES/NPI INFORMATION:
+- NPI 1982736492 registered to We Care Transportation, Overland Park, KS
+- Taxonomy: Non-Emergency Medical Transport (Van) - 343900000X
+- Note: A separate NPI (1871309096) exists for a "We Care Transportation"
+  entity offering NEMT services
+
+WEB PRESENCE:
+- Website: wecaretransportation.net - advertises medical transportation, surgery
+  surrogate services, and an NEMT Mentorship Program
+- The company appears to still maintain an active web presence
+
+FRAUD/EXCLUSION DETAILS:
+- Limited public information found regarding the specific exclusion in 2010
+- The GAO report "Medicaid: Efforts to Address Fraud in Nonemergency Medical
+  Transportation" (GAO-22-105447) documented widespread NEMT fraud including
+  billing for trips that never occurred and using unauthorized drivers/vehicles
+- Kansas Medicaid program integrity overseen by KDHE and AG's Medicaid
+  Inspector General
+- Approximately 200 criminal convictions, civil settlements, and judgments
+  against transportation providers in 25 states from FY 2015-20
+
+ASSESSMENT:
+- Specific details of exclusion not publicly available through standard web
+  searches. The OIG LEIE database at exclusions.oig.hhs.gov would contain the
+  authoritative record. Despite 2010 exclusion, the company appears to maintain
+  an active web presence and NEMT operations.
+
+Sources:
+- https://www.gao.gov/products/gao-22-105447
+- https://www.wecaretransportation.net/
+
+================================================================================
+2. HEALTHSMART PACIFIC, INC
+   Newport Beach, CA | NPI 1861407637 | Excluded 2021
+   Type: Hospital
+================================================================================
+
+NPPES/NPI INFORMATION:
+- NPI 1861407637 registered to Healthsmart Pacific Inc
+- Address listed: 2776 Pacific Ave, Long Beach, CA 90806-2613
+- Associated with Pacific Hospital of Long Beach
+
+COMPANY BACKGROUND:
+- HealthSmart Pacific Inc. purchased Pacific Hospital of Long Beach in 1997
+- Owned/operated by Michael D. Drobot Sr. and his son Michael R. Drobot Jr.
+- Pacific Hospital sold in 2013 after federal investigation; renamed under new
+  ownership
+
+FRAUD CASE - "OPERATION SPINAL CAP":
+- Michael Drobot orchestrated a 15-year healthcare fraud scheme (1997-2013)
+- Paid over $40 million in illegal kickbacks to doctors, chiropractors, and
+  others for referring spinal surgery patients to Pacific Hospital
+- Generated approximately $500-600 million in fraudulent bills to California
+  workers' compensation system
+- Kickbacks financed through Drobot's medical hardware company, International
+  Implants (I2) in Newport Beach, which added $250 surcharges per device
+- Drobot's personal compensation from the hospital exceeded $20 million
+
+CRIMINAL PROCEEDINGS:
+- Drobot pleaded guilty and was sentenced to 63 months (5+ years) in federal
+  prison by U.S. District Judge Josephine L. Staton
+- Judge noted Drobot "introduced greed into the doctor-patient relationship"
+- Multiple co-conspirators (surgeons, chiropractors) also convicted
+- Case prosecuted by USAO Central District of California
+
+ADDITIONAL CIVIL ACTIONS:
+- State Compensation Insurance Fund filed a RICO lawsuit against Drobot, his son,
+  HealthSmart Pacific principals, and associated companies
+- In 2015, Drobot/Healthsmart Pacific sued 30 individuals alleging counterfeit
+  screw conspiracy claims
+
+CURRENT STATUS:
+- Pacific Hospital sold and renamed under new ownership in 2013
+- HealthSmart Pacific Inc. excluded from federal healthcare programs in 2021
+- Michael Drobot served prison time; operation described as "the largest fraud
+  in California's history"
+
+Sources:
+- https://www.justice.gov/usao-cdca/pr/former-hospital-owner-sentenced-over-5-years-prison-orchestrating-scheme-paid-over-40
+- https://en.wikipedia.org/wiki/Michael_Drobot
+- https://www.healthcarefinancenews.com/news/more-doctors-indicted-15-year-long-580-million-kickback-scheme-pacific-hospital-long-beach
+- http://www.hipaaspace.com/Medical_Billing/Coding/NPI/Codes/NPI_1861407637.aspx
+
+================================================================================
+3. MOHAMED ASWAD
+   Oncologist | Deming, NM | NPI 1871571406 | Excluded 2016
+================================================================================
+
+NPPES/NPI INFORMATION:
+- NPI 1871571406 registered to Mohamed Basel Aswad, MD
+- Practice Address: 1020 S 8th St Suite B, Deming, NM 88030
+- Phone: (575) 546-3750
+- Also has a practice NPI: 1396073359 (Mohamed B. Aswad, MD PC)
+- Medical school: University of Aleppo Faculty of Medicine
+- NM Medical License: 2003-0043
+
+WEB/PROFESSIONAL PRESENCE:
+- Doximity profile: doximity.com/pub/mohamed-aswad-md
+- Listed on WebMD, Healthgrades, US News Doctors, Medifind
+- Listed as accepting new patients and telehealth appointments
+- Affiliated with Mimbres Memorial Hospital, Deming, NM
+
+CRIMINAL CASE - MISBRANDED DRUGS:
+- December 20, 2013: Pleaded guilty to one count of introducing misbranded
+  drugs into interstate commerce (misdemeanor)
+- Scheme: From 2007-2012, ordered prescription cancer drugs (including Altuzan,
+  a non-US-approved version of Avastin) from Quality Specialty Products (QSP),
+  a Canadian company subsidiary of Canada Drugs
+- Drugs were not FDA-approved for US distribution; labeling/package inserts were
+  not FDA-approved
+- Paid significantly less for Canadian drugs, then billed Medicare for full US
+  price
+- Profited approximately $1.3 million from the scheme
+- SENTENCE: 3 years' probation, ordered to pay $1.3 million restitution
+
+FEDERAL EXCLUSION:
+- Late 2015: Barred by federal government from receiving Medicaid/Medicare
+  reimbursement for minimum 13 years
+- However: New Mexico Human Services Department requested a WAIVER because
+  Aswad was the ONLY oncologist in Luna County (rural area)
+- With Texas Medical Association help, he resolved the issue with OIG and was
+  allowed to continue seeing federal healthcare program patients in the Laredo
+  area counties where he practiced
+
+MALPRACTICE - CHEMOTHERAPY UNDERDOSING:
+- While still on federal probation for misbranded drugs, Aswad allegedly
+  underdosed chemotherapy for a colon cancer patient (diagnosed 2015)
+- Administered "woefully lower doses" than NCCN guidelines recommended
+- Extended recommended 6-month chemotherapy duration by more than double
+- Patient died in 2020 at age 59 (had estimated 69% five-year survival)
+- Wrongful death lawsuit: Jury awarded $2.3 MILLION to patient's wife
+- Aswad's defense: Patient requested modified regimen to avoid side effects
+
+CURRENT STATUS:
+- Appears to still be practicing in Deming, NM despite exclusion and malpractice
+  verdict
+- Listed as accepting new patients on multiple directories
+- Remains the primary oncologist serving rural Luna County
+
+Sources:
+- https://www.justice.gov/usao-nm/pr/deming-oncologist-pleads-guilty-introducing-misbranded-drugs-interstate-commerce
+- https://www.medscape.com/viewarticle/962744
+- https://www.abqjournal.com/2442129/nm-oncologist-with-criminal-past-loses-suit.html
+- https://www.medscape.com/viewarticle/835326
+- https://health.usnews.com/doctors/mohamed-aswad-240589
+
+================================================================================
+4. GARY SMITH
+   General Practitioner | Trion, GA | NPI 1093904914 | Excluded 2021
+================================================================================
+
+NPPES/NPI INFORMATION:
+- NPI 1093904914 registered to Gary Lee Smith, Sr., MD
+- Location: Trion, Georgia
+- Associated with North Georgia Health Clinic (NGHC), a Ringgold, GA-based
+  nonprofit healthcare provider
+
+OIG EXCLUSION RECORD:
+- Date: May 25, 2021
+- Duration: 10 YEARS (voluntary agreement)
+- Legal basis: 42 U.S.C. 1320a-7(b)(7)
+- Reason: Caused submission of false claims to Medicare and Medicaid for
+  prescriptions of Schedule II controlled substances that were not medically
+  necessary
+- Enforcement type: Civil Monetary Penalty (CMP) and Affirmative Exclusion
+- OIG Representative: Katie Fink, Senior Counsel
+
+FALSE CLAIMS ACT SETTLEMENT:
+- North Georgia Healthcare Center (NGHC) and CEO Delaine Hunter agreed to pay
+  $130,000 to settle False Claims Act allegations
+- Allegations: Issued medically unnecessary opioid prescriptions (Schedule II
+  controlled substances) between January 1, 2012 and September 10, 2018
+- Originated from a whistleblower (qui tam) lawsuit filed by former NGHC
+  employee in U.S. District Court, Northern District of Georgia
+
+FRAUD DETAILS:
+- Dr. Smith failed to meet with, evaluate, or review charts of most patients
+  for whom he prescribed opioids
+- Allowed physician assistants to see patients instead
+- Merely signed "a stack of prescriptions each week" without proper review
+- Investigation involved: U.S. Attorney's Office NDGA, Georgia Medicaid Fraud
+  Control Unit, HHS-OIG, Defense Criminal Investigative Service (DCIS)
+
+CONSEQUENCES:
+- 10-year exclusion from ALL federal healthcare programs
+- Both Dr. Smith and any provider using Dr. Smith's services barred from
+  government healthcare reimbursement (Medicare, Medicaid, Tricare)
+- $130,000 civil settlement (shared with NGHC/CEO)
+
+Sources:
+- https://oig.hhs.gov/fraud/enforcement/gary-lee-smith-sr-md-agreed-to-be-excluded-for-10-years-for-medically-unnecessary-prescriptions/
+- https://www.justice.gov/usao-ndga/pr/north-georgia-health-clinic-and-its-ceo-agree-pay-13000000-settle-false-claims-act
+- https://chattooga1180.com/federal-prosecutors-say-dr-gary-smith-prescribed-unnecessary-opioids/
+- https://www.ajc.com/news/georgia-clinic-settles-whistleblower-lawsuit-alleging-unnecessary-opioid-prescriptions/24MWV2BIJBDXTPOHILG6HQK7YQ/
+
+================================================================================
+5. EDUARDO MIRANDA
+   Internist/Oncologist | Laredo, TX | NPI 1285673012 | Excluded 2015
+================================================================================
+
+NPPES/NPI INFORMATION:
+- NPI 1285673012 registered to Eduardo Miranda, MD, FACP
+- Practice: Hematology/Oncology in Laredo, TX
+- Affiliated with Doctors Hospital of Laredo
+
+WEB/PROFESSIONAL PRESENCE:
+- Personal website: eduardomirandamd.com
+- Doximity profile active
+- Listed on WebMD, US News Doctors, Healthgrades, MD.com
+- Listed as accepting appointments at Doctors Hospital of Laredo
+
+CRIMINAL CASE - MISBRANDED DRUGS:
+- December 20, 2013: Pleaded guilty to one count of introducing misbranded
+  drugs into the country
+- Scheme: From 2007-2009, ordered cancer medications from Quality Specialty
+  Products (QSP), a wholesale distributor/subsidiary of Canada Drugs
+- QSP operated from Canada; drugs were not FDA-approved for US distribution
+- Miranda was believed the supplier was US-based but it was actually Canadian
+- Purchased non-approved cancer medication at significantly reduced prices, then
+  billed Medicare for the full US price
+- SENTENCE (June 26, 2014): 5 years' probation, ordered to pay more than
+  $1 million restitution/profits
+
+EXCLUSION AND REINSTATEMENT:
+- Excluded from federal healthcare programs circa 2015
+- August 2015: Laredo Medical Center terminated his medical staff privileges,
+  citing his exclusion
+- Miranda fought back: With Texas Medical Association assistance, he resolved the
+  issue with OIG
+- Received a WAIVER from OIG allowing him to continue participating in federal
+  programs in every Texas county where he had been practicing
+- The hospital's termination was challenged as anti-competitive; a lawsuit
+  (Miranda v. Laredo Specialty Hospital) was filed
+- The hospital "took this action even though it knew that Dr. Miranda was
+  eligible to participate in federal healthcare programs in the Laredo area"
+
+CURRENT STATUS:
+- Appears to be actively practicing oncology in Laredo, TX
+- Listed on multiple medical directories as accepting patients
+- Has active professional website
+
+Sources:
+- https://www.justice.gov/usao-sdtx/pr/local-doctor-pleads-guilty-misbranding-drugs-case
+- https://www.safemedicines.org/2014/06/oncologist-in-laredo-texas-sentenced-in-qsp-counterfeit-drugs-purchase-case.html
+- https://www.texmed.org/Template.aspx?id=52054
+
+================================================================================
+6. TWIN CITIES CARE SERVICES
+   Minneapolis, MN | NPI 1821269275 | Excluded 2017
+   Type: Home Health Agency
+================================================================================
+
+NPPES/NPI INFORMATION:
+- NPI 1821269275 registered to Twin Cities Care Services, Minneapolis, MN
+- Note: Multiple entities with similar names exist in the Twin Cities area
+
+RELATED ENTITIES FOUND:
+- Twin Cities Care (twincitiescare.com) - Elder Care Referral Agency at
+  5808 Olinger Blvd, Minneapolis, MN 55436, phone (612) 268-3500
+- Twin Cities Caring Home Health Care Services Inc - Listed on MN.gov
+  aging/disability resources
+- Twin City Health Services (twincitieshealthservices.com)
+
+FRAUD/EXCLUSION DETAILS:
+- Limited specific public information found regarding this entity's 2017
+  exclusion
+- Minnesota has experienced widespread Medicaid fraud in home health and social
+  services, with U.S. Attorney estimating fraud "likely exceeds $9 billion" in
+  Minnesota-run Medicaid services
+- Minnesota AG Keith Ellison has pursued multiple home health and mental health
+  agency fraud cases
+- Complementary Support Services (CSS), another large Twin Cities mental health
+  agency, was prosecuted for bilking Medicaid of millions
+- Minnesota implemented broad Medicaid payment freezes to combat fraud
+
+CONTEXT:
+- Minnesota home health sector has been particularly vulnerable to Medicaid fraud
+- Multiple home health agencies in the Twin Cities area have been investigated
+  and prosecuted for fraud schemes
+- Federal agents conducted raids on Twin Cities businesses in "suspected fraud"
+  operations
+
+ASSESSMENT:
+- The specific exclusion record would be in the OIG LEIE database and/or
+  Minnesota DHS excluded provider lists. Public news coverage of this specific
+  entity's exclusion was not found through web searches, though the broader
+  Minnesota Medicaid fraud epidemic is well-documented.
+
+Sources:
+- https://minnesotareformer.com/2025/12/18/u-s-attorney-fraud-likely-exceeds-9-billion-in-minnesota-run-medicaid-services/
+- https://mn.gov/dhs/program-integrity/
+- https://www.startribune.com/why-is-minnesota-so-vulnerable-to-medicaid-fraud/601567547
+
+================================================================================
+7. EBONY GIBSON
+   Health Care Aide | Cleveland, OH | NPI 1164942496 | Excluded 2022
+================================================================================
+
+NPPES/NPI INFORMATION:
+- NPI 1164942496 - provider information for this NPI was not found in standard
+  web-accessible NPI databases during searches
+
+FRAUD/EXCLUSION DETAILS:
+- Limited specific public information found regarding this individual's exclusion
+- Ohio Attorney General Dave Yost has aggressively pursued Medicaid fraud cases,
+  with multiple rounds of indictments against home health aides and providers
+- Recent Ohio cases (2025-2026): 13 Medicaid providers charged, 9 Medicaid
+  providers indicted, 7 people and 1 business charged in Medicaid billing fraud
+  in Cleveland/Akron area
+- Typical home health aide fraud schemes in Ohio involve billing for services
+  never provided, phantom patients, and time sheet fraud
+
+CONTEXT:
+- Ohio has seen extensive Medicaid fraud among home health aides and personal
+  care attendants
+- The Ohio Medicaid Fraud Control Unit operates under the Attorney General's
+  office
+- Northern District of Ohio federal prosecutors have charged multiple defendants
+  in Medicaid fraud schemes
+
+ASSESSMENT:
+- The specific case details would be in the OIG LEIE database. The individual
+  case did not generate sufficient public news coverage to appear in standard
+  web searches. The OIG exclusion record at exclusions.oig.hhs.gov would be the
+  authoritative source.
+
+Sources:
+- https://www.ohioattorneygeneral.gov/Media/News-Releases/June-2025/13-Medicaid-Providers-Facing-Fraud-Charges
+- https://oig.hhs.gov/fraud/enforcement/nine-medicaid-providers-facing-fraud-charges/
+
+================================================================================
+8. MELVIN EHRLICH
+   Dentist | Framingham, MA | NPI 1346352531 | Excluded 2016
+================================================================================
+
+NPPES/NPI INFORMATION:
+- NPI 1346352531 registered to Melvin A. Ehrlich, DDS, PC
+- Practice: "Wee Care for Kids" - Pediatric Dentistry
+- Address: 223 Walnut St, Framingham, MA
+- PRACTICE STATUS: CLOSED (confirmed on Yelp)
+
+WEB PRESENCE:
+- US News Doctors profile still exists
+- Healthgrades profile (write a review page)
+- Yelp listing marked as "CLOSED"
+- WebMD profile exists
+
+CRIMINAL CASE - CHILD PORNOGRAPHY:
+- December 2012: Arrested and charged with possession and distribution of child
+  pornography
+- Investigation origin: Spring 2013, a Framingham computer repair technician
+  discovered child pornography on Ehrlich's personal laptop while removing a
+  virus
+- Extensive forensic investigation revealed Ehrlich used the laptop under various
+  usernames to download and distribute commercially traded child pornography
+- December 18, 2014: Pleaded guilty to 5 charges:
+  * Distribution of visual material showing a child in a state of nudity or
+    sexual conduct (2 counts)
+  * Possession of child pornography (3 counts)
+- Sentenced by Middlesex Superior Court Judge Mitchell H. Kaplan to:
+  * 1 year in Middlesex County House of Correction (Billerica)
+  * 3 years' probation
+- Age at time: 52 years old, resident of Millis, MA
+
+IMPORTANT NOTE: Investigation did NOT reveal evidence that Ehrlich abused any
+of his pediatric dental patients or manufactured any images.
+
+MEDIA COVERAGE:
+- CNN reported on case (December 2012)
+- Boston Herald covered multiple aspects
+- Framingham Patch covered sentencing
+- Washington Times covered sentencing
+- Middlesex DA's office issued press release
+
+LICENSE STATUS:
+- April 2016: Melvin Ehrlich, DDS surrendered his dental license per
+  Massachusetts Board of Registration in Dentistry disciplinary action
+- This license surrender was the basis for his OIG exclusion from federal
+  healthcare programs
+
+PRACTICE STATUS:
+- "Wee Care for Kids" dental practice is permanently closed
+- 223 Walnut St, Framingham location no longer operating
+
+Sources:
+- https://patch.com/massachusetts/framingham/framingham-pediatric-dentist-sentenced-child-pornography-case-0
+- https://www.middlesexda.com/press-releases/news/former-dentist-sentenced-child-pornography-case
+- https://www.boston.com/news/local-news/2014/12/22/former-framingham-dentist-gets-one-year-sentence-on-child-porn-charges/
+- https://www.cnn.com/2012/12/27/us/massachusetts-pediatric-dentist-charged
+- https://www.bostonherald.com/2012/12/27/dentist-charged-with-child-porn-possession/
+- https://www.mass.gov/lists/disciplinary-and-other-actions-taken-by-the-board-of-registration-in-dentistry
+
+================================================================================
+9. SAMIR WAHIB
+   OB/GYN | Sullivan, IN | NPI 1851353866 | Excluded 2024
+================================================================================
+
+NPPES/NPI INFORMATION:
+- NPI 1851353866 registered to Samir A. Wahib, DO
+- Specialty: Obstetrics & Gynecology
+- Practiced in Sullivan, IN (Sullivan County Community Hospital)
+- Previously practiced in Youngstown/Canfield, Ohio area
+
+WEB/PROFESSIONAL PRESENCE:
+- Doximity profile: doximity.com/pub/samir-wahib-do
+- US News Doctors profile
+
+CRIMINAL CASE - FEDERAL KICKBACK SCHEME:
+- Scheme duration: March 2014 through January 2017
+- Wahib conspired with two co-conspirators:
+  * Dr. Joni Canby
+  * Dr. Michelle Kapon
+- Scheme: Wahib paid Canby ($20/specimen) and Kapon ($15/specimen) to send him
+  patient specimens for gonorrhea and chlamydia testing
+- Wahib then billed and was paid by federal government (Medicare/Medicaid) for
+  the testing
+- Kickbacks paid in exchange for arranging STD testing referrals
+
+GUILTY PLEA AND SENTENCING:
+- Pleaded guilty to:
+  * 1 count conspiracy to solicit, receive offers and pay kickbacks in
+    connection with a federal health care program
+  * 4 counts receipt of kickbacks in connection with a federal health care program
+- September 2023: Sentenced to:
+  * 4 months in federal prison
+  * 3 years probation
+  * $55,000 fine
+  * $211,092 restitution (shared with co-conspirators)
+- Surrendered to federal custody before January 3, 2024
+
+PRE-SENTENCING ARGUMENTS:
+- Wahib requested no prison time, arguing he was serving the "underserved"
+  population at Sullivan County Community Hospital in rural Indiana
+- Court was not persuaded and imposed prison time
+
+MEDICAL LICENSE STATUS:
+- Ohio license: Suspended for at least 1 year by Ohio Medical Board
+- Later: Ohio Medical Board ruled Wahib could get license back after paying
+  $8,000 fine and completing professional ethics course
+- Indiana license status: Not confirmed through searches
+
+Sources:
+- https://www.wfmj.com/story/49639598/former-valley-obgyn-going-to-prison-for-kickback-conviction
+- https://fox59.com/indiana-news/indiana-doctor-sentenced-in-federal-billing-scheme-out-of-ohio/
+- https://www.sullivan-times.com/news/scch-obgyn-seeks-no-prison-time-for-kickback-conviction/article_d5b42f50-50d8-11ee-b581-435cd00ae6c5.html
+- https://www.wkbn.com/news/local-news/youngstown-news/ousted-youngstown-area-doctor-could-get-license-back/
+- https://www.vindy.com/news/local-news/2023/09/doctor-requests-no-prison-time-in-tests-scheme/
+- https://www.vindy.com/news/local-news/2023/09/former-canfield-doctor-sentenced-to-prison/
+
+================================================================================
+10. ROOZBEH BADII
+    Internist | San Diego, CA | NPI 1205023512 | Excluded 2018
+================================================================================
+
+NPPES/NPI INFORMATION:
+- NPI 1205023512 registered to Roozbeh Badii, M.D.
+- Address: San Diego, CA 92122
+- Specialty: Internal Medicine
+
+WEB/PROFESSIONAL PRESENCE:
+- Doximity profile: doximity.com/pub/roozbeh-badii-md
+- Healthgrades profile (Northridge, CA)
+- US News Doctors profile (San Diego, CA)
+- ZocDoc listing (Silver Spring, MD)
+- Personal website for practice (drvictorbrucemd.com linked; may be error)
+
+DISCIPLINARY HISTORY - MULTIPLE STATES:
+Roozbeh Badii has been disciplined by medical boards in at least SEVEN states:
+
+1. CALIFORNIA: Probation for prescribing non-FDA-approved substances (HCG for
+   weight loss, Ipamorelin) through Nu Image Medical (telehealth). Board
+   prevented him from doing telemedicine for one year. Found to have committed
+   "gross negligence" in care of three female patients.
+
+2. MARYLAND: License suspended for 1 year (April 2020) after hearing on
+   allegations he was "professionally, physically or mentally incompetent"
+   to practice.
+
+3. CONNECTICUT: Disciplined by Medical Examining Board. State allowed him to
+   treat patients via telehealth while on probation.
+
+4. MASSACHUSETTS: Board indefinitely suspended his right to renew medical
+   license, citing discipline in Maryland and Connecticut, and failure to
+   cooperate with Maryland Board investigation.
+
+5. OHIO: License suspended
+6. FLORIDA: License suspended
+7. VIRGINIA: License suspended
+8. MICHIGAN: License suspended
+
+DEA REGISTRATION REVOKED:
+- Federal Register notice March 31, 2021 (Document 2021-06584)
+- DEA revoked Certificate of Registration No. FB0526307
+- Reason: Lacked authority to practice medicine in Virginia (where registered
+  with DEA), therefore not authorized to handle controlled substances
+- Also denied any pending applications to renew/modify registration
+- Denied any other application for additional registration in Virginia
+
+CLINICAL MISCONDUCT:
+- Worked for Nu Image Medical, a telemedicine website connecting patients
+  remotely with doctors
+- Prescribed non-FDA-approved HCG products for weight loss/obesity
+- Prescribed Ipamorelin, which is not FDA-approved for human use
+- Found to have committed "gross negligence" in care of three female patients
+
+ASSESSMENT:
+- Extraordinary pattern of serial discipline across multiple states
+- Despite repeated license suspensions and revocations, appears to have moved
+  between states to continue practicing
+- DEA registration revoked at federal level in 2021
+
+Sources:
+- https://www.federalregister.gov/documents/2021/03/31/2021-06584/roozbeh-badii-md-decision-and-order
+- https://www.10news.com/news/team-10/coronado-based-doctor-on-probation-for-prescribing-hormones-to-patients-for-weight-loss
+- https://c-hit.org/2020/11/17/medical-board-disciplines-two-doctors/
+- https://www.mass.gov/news/massachusetts-board-of-medicine-takes-disciplinary-action-november-7-2024
+
+================================================================================
+11. VICTOR BRUCE
+    Pain Management | Taft, CA (NPI registered Las Vegas, NV) | NPI 1134139884
+    | Excluded 2015
+================================================================================
+
+NPPES/NPI INFORMATION:
+- NPI 1134139884 registered to Victor M. Bruce, M.D.
+- Practice: Swan Lake Medical Center, 3330 South Hualapai Way, Las Vegas, NV
+- Specialty: Internal Medicine / Pain Management
+- NPI registered August 8, 2006
+- Note: NPI registration shows Las Vegas, NV - not Taft, CA as listed in your
+  query. The provider may have had a practice in both locations.
+
+WEB/PROFESSIONAL PRESENCE:
+- Personal website: drvictorbrucemd.com
+- WebMD profile (Las Vegas, NV)
+- Doximity profile (Pediatrics listed, Las Vegas, NV)
+- Tebra provider listing
+- MD.com profile
+
+CRIMINAL CASE - DRUG CONSPIRACY:
+- December 13, 2013: Charged by USAO District of Nevada
+- Scheme: From unknown date through November 2013, Bruce and co-conspirators
+  conspired to distribute oxycodone
+- Co-conspirators:
+  * Robert Wolfe, aka "old man"
+  * Millicent Epino
+  * Dylan DuBois
+  * Jennifer Monge
+  * Jade Lepoma
+- Method: Wolfe provided Bruce with lists of names; Bruce wrote oxycodone
+  prescriptions for those individuals (whom he never saw or treated)
+- Bruce created "dummy" medical records to make it appear legitimate patient
+  encounters had occurred
+- Bruce represented himself as a "pain management specialist"
+
+GUILTY PLEA AND SENTENCING:
+- July 1, 2014: Pleaded guilty to one count of conspiracy to distribute a
+  controlled substance
+- October 16, 2014: Sentenced to:
+  * 46 months (nearly 4 years) in federal prison
+  * 3 years of supervised release
+- Permitted to self-report to federal prison by January 16, 2015
+
+MEDICAL LICENSE STATUS:
+- December 2014: Nevada medical license REVOKED by Nevada State Board of
+  Medical Examiners
+- Terms included potential reinstatement after compliance with professional
+  probation conditions
+
+MEDIA COVERAGE:
+- Las Vegas Review-Journal covered case extensively
+- Las Vegas Sun covered plea and sentencing
+- DEA issued press releases
+- DOJ USAO District of Nevada press releases
+
+Sources:
+- https://www.justice.gov/usao-nv/pr/las-vegas-doctor-sentenced-46-months-prison-writing-unlawful-oxycodone-prescriptions
+- https://www.dea.gov/press-releases/2014/10/16/las-vegas-doctor-sentenced-46-months-prison-writing-unlawful-oxycodone
+- https://www.reviewjournal.com/local/local-las-vegas/lv-physician-sentenced-for-drug-trafficking/
+- https://lasvegassun.com/news/2014/jul/01/doctor-pleads-guilty-alleged-prescription-drug-con/
+
+================================================================================
+12. DIANA GALLARDO
+    Dentist | Caguas, PR | NPI 1346460094 | Excluded 2022
+================================================================================
+
+NPPES/NPI INFORMATION:
+- NPI 1346460094 registered to Diana M. Gallardo, DMD (or Diana Gallardo
+  Gonzales/Gonzalez)
+- Address: Carr 156 Km .59.6, Calle Betances Final, Edif Puig Suite #2,
+  Caguas, PR 00725
+- Phone: 787-744-0600
+- Specialty: General Dentistry (Taxonomy 122300000X)
+
+WEB/PROFESSIONAL PRESENCE:
+- CareCredit provider listing active (Dra. Diana Gallardo Gonzales, General
+  Dentist, Caguas)
+- Listed in Humana PR provider directory
+- Listed in Delta Dental PR provider directory
+- Listed in Plan Menonita provider directory (2025)
+
+FRAUD/EXCLUSION DETAILS:
+- Limited specific public information found regarding her 2022 exclusion
+- Puerto Rico Medicaid Fraud Control Unit has prosecuted multiple dental fraud
+  cases
+- Puerto Rico DOJ filed charges for "Aggravated Illegal Appropriation of
+  Medicaid Funds" against dental providers in 2020
+- Multiple federal healthcare fraud takedowns have included Puerto Rico
+  defendants
+
+CONTEXT:
+- Puerto Rico has been included in major national healthcare fraud takedowns
+- Puerto Rico Medicaid Fraud Control Unit underwent OIG review in 2024
+- Dental Medicaid fraud is a nationally recognized problem
+
+ASSESSMENT:
+- Despite 2022 exclusion, appears to remain listed in active provider
+  directories (CareCredit, insurance panels) as of 2025. The specific
+  fraud/exclusion details did not generate public news coverage accessible
+  through web searches. The OIG LEIE database would contain the authoritative
+  exclusion record.
+
+Sources:
+- https://www.carecredit.com/doctor-locator/caguas-pr/dra-diana-gallardo-gonzales-xjx394/
+- https://oig.hhs.gov/reports/all/2025/puerto-rico-medicaid-fraud-control-unit-2024-onsite-review/
+
+================================================================================
+13. ROMAN JOHNSON
+    General Practitioner | Hicksville, NY | NPI 1124264148 | Excluded 2017
+================================================================================
+
+NPPES/NPI INFORMATION:
+- NPI 1124264148 registered to Roman Johnson
+- Location: Hicksville, NY (Long Island)
+- Note: DOJ records list him as "formerly of Buffalo, New York"
+
+CRIMINAL CASE - $14.2 MILLION MEDICARE FRAUD:
+- Johnson, age 40, formerly of Buffalo, New York
+- Pleaded guilty before U.S. Magistrate Judge Marilyn D. Go in the
+  Eastern District of New York
+- Charge: One count of conspiracy to commit health care fraud
+- Part of the Medicare Fraud Strike Force, supervised by Criminal Division's
+  Fraud Section and USAO Eastern District of New York
+- Investigated by FBI and HHS-OIG
+
+FRAUD SCHEME:
+- Johnson and other medical providers at his clinic submitted approximately
+  $14.2 MILLION in false and fraudulent claims to Medicare
+- Claims were for medically unnecessary services including:
+  * Vitamin infusions
+  * Physical therapy
+  * Occupational therapy
+- Services did not qualify for Medicare reimbursement
+- Total amount Medicare actually paid: $5,386,363
+
+PLEA AGREEMENT:
+- Agreed to pay $5,386,363 in restitution to Medicare program
+- Sentencing was scheduled for a later date (specific sentence not confirmed in
+  available search results)
+- Case charged under 18 U.S.C. 1349 (conspiracy to commit health care fraud)
+
+MEDIA COVERAGE:
+- DOJ press release (March 2015)
+- FBI press release
+- Becker's Hospital Review
+- Multiple healthcare fraud news outlets
+
+ASSESSMENT:
+- Major Medicare fraud case involving $14.2 million in false claims
+- Part of national Medicare Fraud Strike Force operations
+- The $5.4 million restitution represents actual Medicare payments resulting
+  from the fraudulent claims
+
+Sources:
+- https://www.justice.gov/archives/opa/pr/new-york-doctor-pleads-guilty-142-million-medicare-fraud-scheme
+- https://www.fbi.gov/contact-us/field-offices/newyork/news/press-releases/new-york-doctor-pleads-guilty-in-14.2-million-medicare-fraud-scheme
+- https://www.beckershospitalreview.com/legal-regulatory-issues/ny-physician-pleads-guilty-in-14-2m-medicare-fraud-scheme/
+
+================================================================================
+SUMMARY TABLE
+================================================================================
+
+No. | Provider              | Location        | Fraud Type           | Amount      | Sentence/Penalty
+----|----------------------|----------------|---------------------|------------|------------------
+1   | We Care Transport.   | Overland Park,KS| NEMT fraud          | Unknown    | Excluded 2010
+2   | HealthSmart Pacific  | Long Beach, CA  | $500M+ kickbacks    | $40M+ kicks| 63 months prison (owner)
+3   | Mohamed Aswad        | Deming, NM      | Misbranded drugs    | $1.3M      | 3 yrs probation + $2.3M malpractice
+4   | Gary Smith           | Trion, GA       | Unnecessary opioids | $130K settl.| 10-yr exclusion
+5   | Eduardo Miranda      | Laredo, TX      | Misbranded drugs    | $1M+       | 5 yrs probation
+6   | Twin Cities Care Svc | Minneapolis, MN | Home health fraud   | Unknown    | Excluded 2017
+7   | Ebony Gibson         | Cleveland, OH   | HCA Medicaid fraud  | Unknown    | Excluded 2022
+8   | Melvin Ehrlich       | Framingham, MA  | License surrender   | N/A        | 1 yr prison (child porn)
+9   | Samir Wahib          | Sullivan, IN    | Kickback scheme     | $211K rest.| 4 months prison
+10  | Roozbeh Badii        | San Diego, CA   | Gross negligence    | Unknown    | DEA revoked, 7+ state actions
+11  | Victor Bruce         | Las Vegas, NV   | Drug conspiracy     | Unknown    | 46 months prison
+12  | Diana Gallardo       | Caguas, PR      | Medicaid fraud      | Unknown    | Excluded 2022
+13  | Roman Johnson        | Hicksville, NY  | $14.2M Medicare fraud| $5.4M rest.| Guilty plea
+
+================================================================================
+KEY FINDINGS
+================================================================================
+
+1. MOST SERIOUS CASES BY DOLLAR AMOUNT:
+   - HealthSmart Pacific/Drobot: $500M+ in fraudulent billing, $40M+ kickbacks
+   - Roman Johnson: $14.2M in false Medicare claims
+   - Mohamed Aswad: $1.3M misbranded drug profits + $2.3M malpractice verdict
+   - Eduardo Miranda: $1M+ restitution
+
+2. PRISON SENTENCES IMPOSED:
+   - Michael Drobot (HealthSmart Pacific): 63 months
+   - Victor Bruce: 46 months
+   - Samir Wahib: 4 months
+   - Melvin Ehrlich: 12 months (child pornography, not healthcare fraud)
+
+3. PROVIDERS STILL APPARENTLY PRACTICING:
+   - Mohamed Aswad: Listed as accepting patients in Deming, NM (received waiver)
+   - Eduardo Miranda: Listed as accepting patients in Laredo, TX (received waiver)
+   - Diana Gallardo: Listed in active insurance provider directories
+   - Roozbeh Badii: Has moved between states, listings in multiple locations
+
+4. SERIAL OFFENDERS:
+   - Roozbeh Badii: Disciplined in 7+ states, DEA registration revoked,
+     continued to find ways to practice
+   - Mohamed Aswad: Criminal conviction followed by malpractice verdict for
+     underdosing chemotherapy
+
+5. NON-FRAUD EXCLUSION:
+   - Melvin Ehrlich: Excluded for license surrender following child pornography
+     conviction, not for healthcare fraud specifically
+
+6. LIMITED PUBLIC INFORMATION:
+   - We Care Transportation, Twin Cities Care Services, Ebony Gibson, and Diana
+     Gallardo had limited publicly available information about their specific
+     exclusion circumstances. These cases may involve smaller-scale fraud that
+     did not generate significant media coverage.
+
+================================================================================
+METHODOLOGY NOTE
+================================================================================
+
+This report was compiled through systematic web searches using multiple search
+strategies for each provider, including:
+- Name + location + "medicaid fraud"
+- Name + specialty + "excluded"
+- Name + location + "indictment OR convicted OR sentenced"
+- Business name + "medicaid fraud"
+- NPI number + "excluded"
+- DOJ press releases
+- OIG enforcement action pages
+- State medical board records
+- News archives
+- Professional directories and NPI registries
+
+For providers where limited information was found (We Care Transportation, Twin
+Cities Care Services, Ebony Gibson, Diana Gallardo), the authoritative source
+for exclusion records would be the OIG LEIE database at exclusions.oig.hhs.gov,
+which was not directly queryable through web search.
+
+================================================================================
+END OF REPORT
+================================================================================

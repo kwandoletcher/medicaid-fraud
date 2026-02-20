@@ -1,0 +1,1659 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MEDICAID FRAUD DETECTION // HHS OPEN DATA</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@300;400;500;600;700&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0a0a0c;--bg2:#111116;--bg3:#1a1a22;--bg4:#22222e;
+  --text:#e8e6e3;--text2:#9a9898;--text3:#5c5c5c;
+  --red:#ff3b30;--red2:#ff6b60;--red-dim:rgba(255,59,48,.12);
+  --orange:#ff9500;--orange2:#ffb340;--orange-dim:rgba(255,149,0,.12);
+  --yellow:#ffd60a;--yellow-dim:rgba(255,214,10,.1);
+  --green:#30d158;--green2:#44e86c;--green-dim:rgba(48,209,88,.1);
+  --blue:#0a84ff;--blue2:#409cff;--blue-dim:rgba(10,132,255,.1);
+  --purple:#bf5af2;
+  --gold:#c8a84e;--gold-dim:rgba(200,168,78,.1);
+  --border:#2a2a34;
+  --glow-red:0 0 40px rgba(255,59,48,.15);
+  --glow-orange:0 0 40px rgba(255,149,0,.1);
+}
+html{font-size:15px;scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;line-height:1.5;overflow-x:hidden}
+
+/* Scrollbar */
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--bg4);border-radius:3px}
+
+/* Grid noise overlay */
+body::before{
+  content:'';position:fixed;inset:0;pointer-events:none;z-index:9999;
+  background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(255,255,255,.008) 2px,rgba(255,255,255,.008) 4px);
+}
+
+/* Top bar */
+.topbar{
+  position:sticky;top:0;z-index:100;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:12px 32px;
+  background:rgba(10,10,12,.92);backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border);
+}
+.topbar-left{display:flex;align-items:center;gap:16px}
+.topbar-logo{font-family:'JetBrains Mono',monospace;font-weight:800;font-size:14px;letter-spacing:2px;color:var(--gold)}
+.topbar-divider{width:1px;height:20px;background:var(--border)}
+.topbar-label{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--text3);font-family:'JetBrains Mono',monospace}
+.topbar-right{display:flex;align-items:center;gap:12px}
+.topbar-badge{
+  font-family:'JetBrains Mono',monospace;font-size:10px;
+  letter-spacing:1.5px;text-transform:uppercase;
+  padding:4px 10px;border-radius:2px;
+  background:var(--red-dim);color:var(--red);border:1px solid rgba(255,59,48,.2);
+}
+.topbar-badge.live{animation:pulse-badge 2s ease-in-out infinite}
+@keyframes pulse-badge{0%,100%{opacity:1}50%{opacity:.5}}
+.topbar-dot{width:6px;height:6px;border-radius:50%;background:var(--red);animation:pulse-badge 1.5s ease-in-out infinite}
+
+/* Hero */
+.hero{
+  padding:80px 32px 60px;
+  background:linear-gradient(180deg,rgba(255,59,48,.03) 0%,transparent 60%);
+  border-bottom:1px solid var(--border);
+  position:relative;overflow:hidden;
+}
+.hero::before{
+  content:'';position:absolute;top:-200px;right:-200px;width:600px;height:600px;
+  background:radial-gradient(circle,rgba(255,59,48,.04),transparent 70%);
+  pointer-events:none;
+}
+.hero-eyebrow{
+  font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:4px;
+  text-transform:uppercase;color:var(--red);margin-bottom:16px;
+  display:flex;align-items:center;gap:8px;
+}
+.hero-eyebrow::before{content:'';width:24px;height:1px;background:var(--red)}
+.hero h1{
+  font-family:'Space Grotesk',sans-serif;font-size:clamp(2.8rem,5vw,4.2rem);
+  font-weight:700;line-height:1.05;margin-bottom:12px;
+  letter-spacing:-1px;
+}
+.hero h1 span{color:var(--red)}
+.hero-sub{font-size:16px;color:var(--text2);max-width:600px;margin-bottom:40px}
+
+/* Stat row */
+.stats-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1px;background:var(--border);border:1px solid var(--border);border-radius:4px;overflow:hidden}
+.stat-card{background:var(--bg2);padding:24px 28px}
+.stat-label{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--text3);margin-bottom:8px}
+.stat-value{font-family:'Space Grotesk',sans-serif;font-size:2.2rem;font-weight:700;line-height:1}
+.stat-value.red{color:var(--red)}
+.stat-value.orange{color:var(--orange)}
+.stat-value.gold{color:var(--gold)}
+.stat-value.green{color:var(--green)}
+.stat-sub{font-size:12px;color:var(--text3);margin-top:6px}
+
+/* Sections */
+.section{padding:60px 32px;border-bottom:1px solid var(--border)}
+.section-header{margin-bottom:40px}
+.section-eyebrow{
+  font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:3px;
+  text-transform:uppercase;color:var(--text3);margin-bottom:8px;
+  display:flex;align-items:center;gap:8px;
+}
+.section-eyebrow::before{content:'';width:16px;height:1px;background:var(--text3)}
+.section-title{font-family:'Space Grotesk',sans-serif;font-size:1.8rem;font-weight:600;letter-spacing:-.5px}
+.section-desc{color:var(--text2);font-size:14px;margin-top:8px;max-width:700px}
+
+/* Charts */
+.chart-container{background:var(--bg2);border:1px solid var(--border);border-radius:4px;padding:24px;position:relative}
+.chart-container canvas{max-height:400px}
+.chart-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.chart-grid.triple{grid-template-columns:1fr 1fr 1fr}
+@media(max-width:900px){.chart-grid,.chart-grid.triple{grid-template-columns:1fr}}
+
+/* Case cards */
+.cases-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:900px){.cases-grid{grid-template-columns:1fr}}
+.case-card{
+  background:var(--bg2);border:1px solid var(--border);border-radius:4px;
+  padding:28px;position:relative;overflow:hidden;
+  transition:border-color .2s,box-shadow .2s;cursor:pointer;
+}
+.case-card:hover{border-color:rgba(255,59,48,.3);box-shadow:var(--glow-red)}
+.case-card.critical{border-left:3px solid var(--red)}
+.case-card.high{border-left:3px solid var(--orange)}
+.case-card.medium{border-left:3px solid var(--yellow)}
+.case-severity{
+  font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:2px;
+  text-transform:uppercase;padding:3px 8px;border-radius:2px;
+  display:inline-block;margin-bottom:12px;
+}
+.case-severity.critical{background:var(--red-dim);color:var(--red)}
+.case-severity.high{background:var(--orange-dim);color:var(--orange)}
+.case-severity.medium{background:var(--yellow-dim);color:var(--yellow)}
+.case-title{font-family:'Space Grotesk',sans-serif;font-size:1.1rem;font-weight:600;margin-bottom:8px}
+.case-amount{font-family:'JetBrains Mono',monospace;font-size:1.6rem;font-weight:700;margin-bottom:12px}
+.case-amount.red{color:var(--red)}
+.case-amount.orange{color:var(--orange)}
+.case-detail{font-size:13px;color:var(--text2);line-height:1.6;margin-bottom:8px}
+.case-metric{
+  display:inline-flex;align-items:center;gap:4px;
+  font-family:'JetBrains Mono',monospace;font-size:11px;
+  padding:2px 8px;border-radius:2px;margin:2px 4px 2px 0;
+}
+.case-metric.bad{background:var(--red-dim);color:var(--red2)}
+.case-metric.warn{background:var(--orange-dim);color:var(--orange2)}
+.case-metric.neutral{background:var(--blue-dim);color:var(--blue2)}
+
+/* Expandable detail */
+.case-expand{
+  max-height:0;overflow:hidden;transition:max-height .4s ease;
+  border-top:0 solid var(--border);margin-top:0;padding-top:0;
+}
+.case-card.open .case-expand{max-height:800px;border-top:1px solid var(--border);margin-top:16px;padding-top:16px}
+.case-expand-inner{font-size:13px;color:var(--text2)}
+.case-expand-inner table{width:100%;border-collapse:collapse;margin-top:8px}
+.case-expand-inner th,.case-expand-inner td{
+  text-align:left;padding:6px 10px;font-size:12px;
+  font-family:'JetBrains Mono',monospace;border-bottom:1px solid var(--border);
+}
+.case-expand-inner th{color:var(--text3);font-weight:500;font-size:10px;letter-spacing:1px;text-transform:uppercase}
+.case-expand-inner td.red{color:var(--red)}
+
+/* Table */
+.data-table-wrap{overflow-x:auto;background:var(--bg2);border:1px solid var(--border);border-radius:4px}
+.data-table{width:100%;border-collapse:collapse;font-size:13px}
+.data-table th{
+  position:sticky;top:0;background:var(--bg3);
+  font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:1.5px;
+  text-transform:uppercase;color:var(--text3);font-weight:500;
+  text-align:left;padding:12px 14px;border-bottom:1px solid var(--border);
+  cursor:pointer;user-select:none;white-space:nowrap;
+}
+.data-table th:hover{color:var(--text)}
+.data-table th .sort-arrow{margin-left:4px;opacity:.3}
+.data-table th.sorted .sort-arrow{opacity:1;color:var(--gold)}
+.data-table td{padding:10px 14px;border-bottom:1px solid rgba(42,42,52,.5);font-family:'JetBrains Mono',monospace;font-size:12px;white-space:nowrap}
+.data-table tr:hover td{background:rgba(255,255,255,.02)}
+.risk-bar{display:inline-block;height:6px;border-radius:3px;min-width:8px}
+.risk-badge{
+  font-size:10px;padding:2px 6px;border-radius:2px;font-weight:600;letter-spacing:.5px;
+}
+.risk-badge.critical{background:var(--red-dim);color:var(--red)}
+.risk-badge.high{background:var(--orange-dim);color:var(--orange)}
+.risk-badge.medium{background:var(--yellow-dim);color:var(--yellow)}
+
+/* Flow diagram */
+.flow-container{background:var(--bg2);border:1px solid var(--border);border-radius:4px;padding:32px;overflow-x:auto}
+.flow-row{display:flex;align-items:stretch;gap:0;min-width:900px;position:relative}
+.flow-col{flex:1;display:flex;flex-direction:column;gap:4px;position:relative}
+.flow-col-header{
+  font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:2px;
+  text-transform:uppercase;color:var(--text3);margin-bottom:12px;text-align:center;
+}
+.flow-node{
+  padding:10px 14px;border-radius:3px;font-size:12px;position:relative;
+  display:flex;justify-content:space-between;align-items:center;gap:12px;
+}
+.flow-node .fname{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:200px}
+.flow-node .famount{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600;white-space:nowrap}
+.flow-node.source{background:var(--blue-dim);border:1px solid rgba(10,132,255,.2)}
+.flow-node.normal{background:var(--bg3);border:1px solid var(--border)}
+.flow-node.warn{background:var(--orange-dim);border:1px solid rgba(255,149,0,.2)}
+.flow-node.danger{background:var(--red-dim);border:1px solid rgba(255,59,48,.3);color:var(--red2)}
+.flow-arrows{flex:0 0 60px;position:relative}
+.flow-arrows svg{position:absolute;inset:0;width:100%;height:100%}
+
+/* Scatter */
+.scatter-legend{display:flex;gap:20px;margin-bottom:16px;flex-wrap:wrap}
+.scatter-legend-item{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--text2)}
+.scatter-legend-dot{width:10px;height:10px;border-radius:50%}
+
+/* Nav tabs */
+.nav-tabs{display:flex;gap:2px;margin-bottom:24px;background:var(--bg3);border-radius:4px;padding:3px;width:fit-content}
+.nav-tab{
+  font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;
+  padding:8px 16px;border-radius:3px;cursor:pointer;color:var(--text3);
+  transition:all .2s;border:none;background:none;
+}
+.nav-tab:hover{color:var(--text)}
+.nav-tab.active{background:var(--bg);color:var(--text);box-shadow:0 1px 3px rgba(0,0,0,.3)}
+
+/* Donut container */
+.donut-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px}
+.donut-card{background:var(--bg2);border:1px solid var(--border);border-radius:4px;padding:20px;text-align:center}
+.donut-card canvas{margin:0 auto 12px}
+.donut-npi{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text3)}
+.donut-pct{font-family:'Space Grotesk',sans-serif;font-size:1.4rem;font-weight:700;margin:4px 0}
+.donut-pct.red{color:var(--red)}
+.donut-code{font-size:12px;color:var(--text2)}
+.donut-amount{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--gold);margin-top:4px}
+
+/* Bar comparison */
+.bar-compare{margin-top:16px}
+.bar-row{display:flex;align-items:center;gap:12px;margin-bottom:10px}
+.bar-label{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text2);min-width:120px;text-align:right}
+.bar-track{flex:1;height:22px;background:var(--bg3);border-radius:3px;position:relative;overflow:hidden}
+.bar-fill{height:100%;border-radius:3px;position:relative;min-width:2px;transition:width .8s ease}
+.bar-fill.normal{background:linear-gradient(90deg,var(--green),rgba(48,209,88,.6))}
+.bar-fill.outlier{background:linear-gradient(90deg,var(--red),rgba(255,59,48,.6))}
+.bar-val{font-family:'JetBrains Mono',monospace;font-size:10px;position:absolute;right:8px;top:50%;transform:translateY(-50%);color:rgba(255,255,255,.9);text-shadow:0 1px 2px rgba(0,0,0,.5)}
+
+/* Footer */
+.footer{padding:40px 32px;text-align:center}
+.footer-text{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--text3)}
+
+/* Animations */
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.animate-in{animation:fadeUp .6s ease forwards;opacity:0}
+.delay-1{animation-delay:.1s}.delay-2{animation-delay:.2s}.delay-3{animation-delay:.3s}.delay-4{animation-delay:.4s}.delay-5{animation-delay:.5s}
+
+/* Utility */
+.mt-20{margin-top:20px}
+.mb-20{margin-bottom:20px}
+.text-red{color:var(--red)}.text-orange{color:var(--orange)}.text-gold{color:var(--gold)}.text-green{color:var(--green)}
+.mono{font-family:'JetBrains Mono',monospace}
+</style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="topbar">
+  <div class="topbar-left">
+    <div class="topbar-logo">HHS // OPENDATA</div>
+    <div class="topbar-divider"></div>
+    <div class="topbar-label">Fraud Detection Analysis</div>
+  </div>
+  <div class="topbar-right">
+    <a href="wall_of_shame.html" style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;padding:4px 10px;border-radius:2px;background:rgba(255,149,0,.12);color:#ff9500;border:1px solid rgba(255,149,0,.2);text-decoration:none">Wall of Shame</a>
+    <div class="topbar-dot"></div>
+    <div class="topbar-badge live">227M Records Analyzed</div>
+  </div>
+</div>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-eyebrow">Medicaid Provider Spending // T-MSIS 2018-2024</div>
+  <h1 class="animate-in">Where did<br><span>$1.09 Trillion</span> go?</h1>
+  <p class="hero-sub animate-in delay-1">Analysis of 227 million Medicaid claims across 617,503 providers. Anomaly detection flagged billions in suspected fraud, waste, and abuse.</p>
+  <div class="stats-row animate-in delay-2">
+    <div class="stat-card">
+      <div class="stat-label">Total Medicaid Paid</div>
+      <div class="stat-value gold">$1.09T</div>
+      <div class="stat-sub">Jan 2018 &ndash; Dec 2024</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Providers Analyzed</div>
+      <div class="stat-value">617,503</div>
+      <div class="stat-sub">Unique billing NPIs</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Total Claims</div>
+      <div class="stat-value">18.8B</div>
+      <div class="stat-sub">Individual claim lines</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Flagged Suspicious</div>
+      <div class="stat-value red">1,062</div>
+      <div class="stat-sub">Composite risk score &ge; 60</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Est. Waste Identified</div>
+      <div class="stat-value red">$2B+</div>
+      <div class="stat-sub">Overbilling & anomalies</div>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION: Monthly Trend -->
+<div class="section" id="sec-trend">
+  <div class="section-header">
+    <div class="section-eyebrow">01 // Spending Trend</div>
+    <div class="section-title">Monthly Medicaid Payments</div>
+    <div class="section-desc">Spending climbed 76% from $9B to nearly $18B/month. COVID-era policy changes drove acceleration starting mid-2020.</div>
+  </div>
+  <div class="chart-container animate-in">
+    <canvas id="trendChart"></canvas>
+  </div>
+</div>
+
+<!-- SECTION: Money Flow -->
+<div class="section" id="sec-flow">
+  <div class="section-header">
+    <div class="section-eyebrow">02 // Money Flow</div>
+    <div class="section-title">How $1.09 Trillion Flows</div>
+    <div class="section-desc">From Medicaid through procedure categories to the top billing providers. Red indicates anomalous billing patterns.</div>
+  </div>
+  <div class="flow-container animate-in" id="flowDiagram"></div>
+</div>
+
+<!-- SECTION: Billing Anomalies Scatter -->
+<div class="section" id="sec-scatter">
+  <div class="section-header">
+    <div class="section-eyebrow">03 // Anomaly Detection</div>
+    <div class="section-title">Billing Anomaly Scatter</div>
+    <div class="section-desc">Each dot is a flagged provider. Position shows claims-per-beneficiary vs avg cost-per-claim. Size = total dollars. Color = risk level. The further from the cluster, the more suspicious.</div>
+  </div>
+  <div class="scatter-legend">
+    <div class="scatter-legend-item"><div class="scatter-legend-dot" style="background:var(--red)"></div>Critical (score &ge;80)</div>
+    <div class="scatter-legend-item"><div class="scatter-legend-dot" style="background:var(--orange)"></div>High (score 70-80)</div>
+    <div class="scatter-legend-item"><div class="scatter-legend-dot" style="background:var(--yellow)"></div>Elevated (score 60-70)</div>
+  </div>
+  <div class="chart-container animate-in">
+    <canvas id="scatterChart"></canvas>
+  </div>
+</div>
+
+<!-- SECTION: Case Studies -->
+<div class="section" id="sec-cases">
+  <div class="section-header">
+    <div class="section-eyebrow">04 // Case Studies</div>
+    <div class="section-title">Highest-Impact Fraud Signals</div>
+    <div class="section-desc">Deep dives into the most suspicious billing patterns. Click any card to expand details.</div>
+  </div>
+  <div class="cases-grid" id="casesGrid"></div>
+</div>
+
+<!-- SECTION: Revenue Per Claim -->
+<div class="section" id="sec-revenue">
+  <div class="section-header">
+    <div class="section-eyebrow">05 // Price Comparison</div>
+    <div class="section-title">What Providers Charge vs. The Median</div>
+    <div class="section-desc">For key procedure codes, comparing what outlier providers charge per claim vs the national median. Red bars = suspected overbilling.</div>
+  </div>
+  <div id="revenueComparisons"></div>
+</div>
+
+<!-- SECTION: Procedure Concentration -->
+<div class="section" id="sec-concentration">
+  <div class="section-header">
+    <div class="section-eyebrow">06 // Concentration Risk</div>
+    <div class="section-title">Single-Procedure Billing Mills</div>
+    <div class="section-desc">Providers deriving 90-100% of revenue from a single procedure code. While some specialization is normal, extreme concentration combined with high volume is a red flag.</div>
+  </div>
+  <div class="donut-grid animate-in" id="donutGrid"></div>
+</div>
+
+<!-- SECTION: Volume Spikes -->
+<div class="section" id="sec-spikes">
+  <div class="section-header">
+    <div class="section-eyebrow">07 // Volume Spikes</div>
+    <div class="section-title">Sudden Billing Explosions</div>
+    <div class="section-desc">Providers whose monthly billing suddenly jumped 5-1000x their historical average. Could indicate a change in billing practices or emerging fraud.</div>
+  </div>
+  <div class="chart-container animate-in">
+    <canvas id="spikeChart"></canvas>
+  </div>
+</div>
+
+<!-- SECTION: Composite Table -->
+<div class="section" id="sec-table">
+  <div class="section-header">
+    <div class="section-eyebrow">08 // Risk Registry</div>
+    <div class="section-title">Composite Fraud Risk Scores</div>
+    <div class="section-desc">All providers scoring above 30 on our multi-signal composite index. Combines billing intensity, spending anomalies, procedure concentration, volume spikes, and procedure diversity.</div>
+  </div>
+  <div class="data-table-wrap animate-in" style="max-height:600px;overflow-y:auto">
+    <table class="data-table" id="riskTable">
+      <thead><tr>
+        <th data-col="rank"># <span class="sort-arrow">&#9650;</span></th>
+        <th data-col="npi">NPI <span class="sort-arrow">&#9650;</span></th>
+        <th data-col="name">Organization <span class="sort-arrow">&#9650;</span></th>
+        <th data-col="official">Authorized Official <span class="sort-arrow">&#9650;</span></th>
+        <th data-col="score">Score <span class="sort-arrow">&#9660;</span></th>
+        <th data-col="paid">Total Paid <span class="sort-arrow">&#9660;</span></th>
+        <th data-col="cpb">Claims/Bene <span class="sort-arrow">&#9660;</span></th>
+        <th data-col="conc">Top Proc % <span class="sort-arrow">&#9660;</span></th>
+        <th data-col="spike">Max Spike <span class="sort-arrow">&#9660;</span></th>
+        <th data-col="risk">Risk <span class="sort-arrow">&#9660;</span></th>
+      </tr></thead>
+      <tbody id="riskTableBody"></tbody>
+    </table>
+  </div>
+</div>
+
+<!-- SECTION: Billing/Servicing Mismatch -->
+<div class="section" id="sec-mismatch">
+  <div class="section-header">
+    <div class="section-eyebrow">09 // Pass-Through Billing</div>
+    <div class="section-title">Billing vs. Servicing Mismatches</div>
+    <div class="section-desc">NPIs that bill enormous amounts but barely appear as servicing providers. Extreme ratios may indicate pass-through billing schemes.</div>
+  </div>
+  <div class="chart-container animate-in">
+    <canvas id="mismatchChart"></canvas>
+  </div>
+</div>
+
+<!-- SECTION: Fraud by State -->
+<div class="section" id="sec-states">
+  <div class="section-header">
+    <div class="section-eyebrow">10 // Geographic Analysis</div>
+    <div class="section-title">Fraud Signals by State</div>
+    <div class="section-desc">Aggregated suspicious billing across 36 states and territories. States are ranked by total suspicious dollars from the top 200 composite-scored providers. Highlighted rows indicate Vermont-like patterns: multiple flagged providers concentrated in the same specialty.</div>
+  </div>
+  <div class="chart-grid" style="grid-template-columns:1fr 1fr;align-items:start">
+    <div class="chart-container animate-in" style="grid-row:span 2">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;gap:8px">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--text3)">Suspicious Dollars by State</div>
+        <div class="nav-tabs" id="stateFilterTabs" style="margin-bottom:0">
+          <button class="nav-tab active" data-filter="all">ALL</button>
+          <button class="nav-tab" data-filter="very-high" style="color:var(--red)">&#9679; VERY HIGH</button>
+          <button class="nav-tab" data-filter="high" style="color:var(--orange)">&#9679; HIGH</button>
+          <button class="nav-tab" data-filter="flagged" style="color:var(--yellow)">&#9679; FLAGGED</button>
+        </div>
+      </div>
+      <canvas id="stateBarChart"></canvas>
+    </div>
+    <div class="chart-container animate-in" id="stateAlerts">
+      <div style="margin-bottom:16px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--red)">&#9888; Concentrated-Specialty Alerts</div>
+      <div id="stateAlertCards"></div>
+    </div>
+    <div class="chart-container animate-in">
+      <div style="margin-bottom:12px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--text3)">Per-Provider Suspicious Average by State</div>
+      <canvas id="stateAvgChart"></canvas>
+    </div>
+  </div>
+  <div class="data-table-wrap animate-in mt-20" style="max-height:600px;overflow-y:auto">
+    <table class="data-table" id="stateTable">
+      <thead><tr>
+        <th data-col="rank"># <span class="sort-arrow">&#9650;</span></th>
+        <th data-col="state">State <span class="sort-arrow">&#9650;</span></th>
+        <th data-col="providers">Providers <span class="sort-arrow">&#9660;</span></th>
+        <th data-col="paid">Suspicious $ <span class="sort-arrow">&#9660;</span></th>
+        <th data-col="avg">Avg Score <span class="sort-arrow">&#9660;</span></th>
+        <th data-col="max">Max Score <span class="sort-arrow">&#9660;</span></th>
+        <th data-col="specialty">Top Specialty <span class="sort-arrow">&#9650;</span></th>
+        <th data-col="conc">Spec. Conc. <span class="sort-arrow">&#9660;</span></th>
+        <th data-col="alert">Alert <span class="sort-arrow">&#9660;</span></th>
+      </tr></thead>
+      <tbody id="stateTableBody"></tbody>
+    </table>
+  </div>
+</div>
+
+<div class="footer">
+  <div class="footer-text">HHS Open Data // Medicaid Provider Spending Analysis // Data: T-MSIS 2018&ndash;2024</div>
+</div>
+
+<script>
+// ===== DATA =====
+const monthlySpending = [
+{"month":"2018-10","totalPaid":9921379666.38},{"month":"2018-11","totalPaid":9072923512.38},{"month":"2018-12","totalPaid":8907431063.82},
+{"month":"2019-01","totalPaid":10529905105.9},{"month":"2019-02","totalPaid":9680573063.79},{"month":"2019-03","totalPaid":10638499933.2},
+{"month":"2019-04","totalPaid":10662800690.75},{"month":"2019-05","totalPaid":10788430160.42},{"month":"2019-06","totalPaid":9722889154.49},
+{"month":"2019-07","totalPaid":10364775003.79},{"month":"2019-08","totalPaid":10628704037.17},{"month":"2019-09","totalPaid":10530148010.35},
+{"month":"2019-10","totalPaid":11890862793.23},{"month":"2019-11","totalPaid":10694811682.1},{"month":"2019-12","totalPaid":10773796446.44},
+{"month":"2020-01","totalPaid":12417328718.27},{"month":"2020-02","totalPaid":11387443071.26},{"month":"2020-03","totalPaid":10327180044.76},
+{"month":"2020-04","totalPaid":8541553016.11},{"month":"2020-05","totalPaid":9276309404.63},{"month":"2020-06","totalPaid":10386347586.83},
+{"month":"2020-07","totalPaid":11043497587.59},{"month":"2020-08","totalPaid":10945591115.5},{"month":"2020-09","totalPaid":11345841778.78},
+{"month":"2020-10","totalPaid":12256768912.53},{"month":"2020-11","totalPaid":11824939391.28},{"month":"2020-12","totalPaid":12337430898.16},
+{"month":"2021-01","totalPaid":12594444977.41},{"month":"2021-02","totalPaid":11715579066.73},{"month":"2021-03","totalPaid":14136311330.65},
+{"month":"2021-04","totalPaid":13565862878.51},{"month":"2021-05","totalPaid":13208518113.69},{"month":"2021-06","totalPaid":13415399746.47},
+{"month":"2021-07","totalPaid":13562082770.47},{"month":"2021-08","totalPaid":14202719417.5},{"month":"2021-09","totalPaid":14024666614.74},
+{"month":"2021-10","totalPaid":14165659978.04},{"month":"2021-11","totalPaid":13904172445.35},{"month":"2021-12","totalPaid":14062529938.43},
+{"month":"2022-01","totalPaid":14412456539.88},{"month":"2022-02","totalPaid":13250746218.5},{"month":"2022-03","totalPaid":15695994584.59},
+{"month":"2022-04","totalPaid":14609179171.9},{"month":"2022-05","totalPaid":14956401093.08},{"month":"2022-06","totalPaid":14650484215.68},
+{"month":"2022-07","totalPaid":14067993433.62},{"month":"2022-08","totalPaid":15825029409.54},{"month":"2022-09","totalPaid":15268172192.71},
+{"month":"2022-10","totalPaid":15854981611.14},{"month":"2022-11","totalPaid":15675981809.01},{"month":"2022-12","totalPaid":15297538611.3},
+{"month":"2023-01","totalPaid":16594310221.53},{"month":"2023-02","totalPaid":15394753399.57},{"month":"2023-03","totalPaid":17668427237.5},
+{"month":"2023-04","totalPaid":16091892914.07},{"month":"2023-05","totalPaid":17280277362.92},{"month":"2023-06","totalPaid":16029192012.87},
+{"month":"2023-07","totalPaid":15725897305.96},{"month":"2023-08","totalPaid":17348504365.58},{"month":"2023-09","totalPaid":16361790144.5}
+];
+
+const topProviders = [
+{npi:"1417262056",name:"Public Partnerships LLC",totalPaid:7177816544,totalClaims:89773441},
+{npi:"1699703827",name:"LA County Dept Mental Health",totalPaid:6778483867,totalClaims:30870976},
+{npi:"1376609297",name:"Tempus Unlimited Inc",totalPaid:5571605313,totalClaims:63523750},
+{npi:"1699725143",name:"Modivcare Solutions LLC",totalPaid:3093063113,totalClaims:107716418},
+{npi:"1922467554",name:"Freedom Care LLC",totalPaid:3025874967,totalClaims:21977069},
+{npi:"1710176151",name:"Guardiantrac LLC",totalPaid:2683634592,totalClaims:35557539},
+{npi:"1629436241",name:"TN Dept Intellectual Disabilities",totalPaid:2596064455,totalClaims:16349155},
+{npi:"1982757688",name:"AL Dept Mental Health",totalPaid:2254946212,totalClaims:1950098},
+{npi:"1538649983",name:"Consumer Direct Care VA",totalPaid:2105798329,totalClaims:22162533},
+{npi:"1528263910",name:"County of Santa Clara",totalPaid:1728502977,totalClaims:4656205}
+];
+
+const topProcedures = [
+{code:"T1019",desc:"Personal Care Services",totalPaid:86282549444.52,totalClaims:795603806},
+{code:"T1015",desc:"Clinic Visit/Encounter",totalPaid:34517390255.23,totalClaims:233910622},
+{code:"T2016",desc:"Residential Habilitation",totalPaid:24302819059.69,totalClaims:48235261},
+{code:"99213",desc:"Office Visit, Level 3",totalPaid:24100779941.13,totalClaims:561027706},
+{code:"S5125",desc:"Attendant Care Services",totalPaid:21790774923.89,totalClaims:287282759},
+{code:"99214",desc:"Office Visit, Level 4",totalPaid:21359850163.14,totalClaims:361918050},
+{code:"99284",desc:"ED Visit, Level 4",totalPaid:14199572401,totalClaims:120996100},
+{code:"H2016",desc:"Community Support/Diem",totalPaid:13613899829.47,totalClaims:41705994},
+{code:"H2015",desc:"Community Support/15min",totalPaid:12835314237.31,totalClaims:83381026},
+{code:"99283",desc:"ED Visit, Level 3",totalPaid:12136683118.42,totalClaims:117686584}
+];
+
+const compositeScores = [
+{npi:"1568910677",paid:208345252,claims:1456200,benes:62443,cpb:23.32,ppc:143.07,conc:98.8,spike:25.35,score:85.6},
+{npi:"1871753533",paid:22408121,claims:20115,benes:6921,cpb:2.91,ppc:1114.0,conc:100.0,spike:28.24,score:84.6},
+{npi:"1528351285",paid:61799221,claims:104025,benes:6575,cpb:15.82,ppc:594.08,conc:93.6,spike:3.81,score:84.5},
+{npi:"1720292329",paid:12208286,claims:38601,benes:3117,cpb:12.38,ppc:316.27,conc:92.1,spike:32.97,score:84.1},
+{npi:"1255923827",paid:19097891,claims:41763,benes:2970,cpb:14.06,ppc:457.29,conc:95.3,spike:7.53,score:84.0},
+{npi:"1851654909",paid:14354879,claims:907,benes:363,cpb:2.5,ppc:15826.77,conc:100.0,spike:8.82,score:83.8},
+{npi:"1265848675",paid:206621411,claims:438522,benes:25973,cpb:16.88,ppc:471.18,conc:88.2,spike:29.89,score:83.7},
+{npi:"1972559565",paid:19373473,claims:35627,benes:2371,cpb:15.03,ppc:543.79,conc:82.2,spike:4.16,score:83.1},
+{npi:"1659039386",paid:31602344,claims:5174,benes:2416,cpb:2.14,ppc:6107.91,conc:100.0,spike:4.06,score:82.9},
+{npi:"1407998842",paid:161692388,claims:538357,benes:30089,cpb:17.89,ppc:300.34,conc:80.5,spike:4.39,score:82.8},
+{npi:"1184769242",paid:34073392,claims:717231,benes:34198,cpb:20.97,ppc:47.51,conc:90.6,spike:89.63,score:82.7},
+{npi:"1003415035",paid:33784262,claims:48361,benes:2073,cpb:23.33,ppc:698.58,conc:71.7,spike:5.09,score:82.5},
+{npi:"1275911398",paid:45257756,claims:16636,benes:6977,cpb:2.38,ppc:2720.47,conc:98.1,spike:107.73,score:82.3},
+{npi:"1609953066",paid:106522242,claims:161882,benes:7134,cpb:22.69,ppc:658.02,conc:71.0,spike:33.94,score:82.2},
+{npi:"1699986034",paid:17467410,claims:63942,benes:2984,cpb:21.43,ppc:273.18,conc:73.7,spike:5.37,score:82.2},
+{npi:"1275257917",paid:1643594,claims:577,benes:38,cpb:15.18,ppc:2848.52,conc:100.0,spike:3.89,score:82.1},
+{npi:"1134250475",paid:1097550708,claims:1432892,benes:259050,cpb:5.53,ppc:765.97,conc:84.7,spike:4.48,score:82.1},
+{npi:"1598898603",paid:137093042,claims:171067,benes:19116,cpb:8.95,ppc:801.4,conc:85.2,spike:3.72,score:81.9},
+{npi:"1306182548",paid:188981224,claims:105104,benes:71080,cpb:1.48,ppc:1798.04,conc:31.1,spike:47081.4,score:81.9},
+{npi:"1649991902",paid:8297620,claims:17711,benes:2616,cpb:6.77,ppc:468.5,conc:88.9,spike:4.65,score:81.7},
+{npi:"1134500648",paid:106694385,claims:224585,benes:22929,cpb:9.79,ppc:475.07,conc:78.0,spike:3.27,score:81.7},
+{npi:"1720560030",paid:74376326,claims:196795,benes:36766,cpb:5.35,ppc:377.94,conc:92.9,spike:3.11,score:81.6},
+{npi:"1144868100",paid:3066185,claims:484,benes:66,cpb:7.33,ppc:6335.09,conc:100.0,spike:19.53,score:81.5},
+{npi:"1609858752",paid:24341401,claims:60140,benes:47582,cpb:1.26,ppc:404.75,conc:54.7,spike:3.62,score:81.5},
+{npi:"1437296282",paid:12598211,claims:89127,benes:9307,cpb:9.58,ppc:141.35,conc:85.0,spike:16.44,score:81.4},
+{npi:"1821323940",paid:110032648,claims:654797,benes:78501,cpb:8.34,ppc:168.04,conc:83.4,spike:39.51,score:81.3},
+{npi:"1467071837",paid:19554452,claims:23469,benes:7061,cpb:3.32,ppc:833.2,conc:92.4,spike:4.43,score:81.2},
+{npi:"1700037900",paid:14427773,claims:37710,benes:5698,cpb:6.62,ppc:382.6,conc:84.2,spike:3.34,score:81.2},
+{npi:"1184817033",paid:15994563,claims:8008,benes:1137,cpb:7.04,ppc:1997.32,conc:78.9,spike:3.56,score:81.2},
+{npi:"1952330797",paid:15979632,claims:41579,benes:2746,cpb:15.14,ppc:384.32,conc:59.6,spike:5.9,score:81.1}
+];
+
+const volumeSpikes = [
+{npi:"1073854451",month:"2018-07",paid:36637188,spike:7.13},
+{npi:"1700901725",month:"2019-03",paid:28992315,spike:6.78},
+{npi:"1346974763",month:"2023-01",paid:18828086,spike:7.31},
+{npi:"1124494059",month:"2019-11",paid:12553179,spike:39.25},
+{npi:"1538649983",month:"2019-01",paid:10387131,spike:10.52},
+{npi:"1740221621",month:"2024-10",paid:10281818,spike:10.11},
+{npi:"1952346876",month:"2020-11",paid:9634441,spike:8.2},
+{npi:"1114931391",month:"2019-12",paid:8371178,spike:53.09},
+{npi:"1962158980",month:"2023-12",paid:7333063,spike:1017.24},
+{npi:"1255623716",month:"2024-11",paid:7750392,spike:19.76},
+{npi:"1124127683",month:"2023-01",paid:6482583,spike:42.47},
+{npi:"1215504824",month:"2023-03",paid:6340864,spike:21.61},
+{npi:"1669982237",month:"2024-05",paid:5940556,spike:60.65},
+{npi:"1932853918",month:"2024-03",paid:5756614,spike:30.51},
+{npi:"1538649983",month:"2018-12",paid:5576744,spike:80},
+];
+
+const mismatchData = [
+{npi:"1083765689",billing:559483344,servicing:1363,ratio:410491},
+{npi:"1669878567",billing:352134469,servicing:32120,ratio:10963},
+{npi:"1578665048",billing:218818427,servicing:29736,ratio:7359},
+{npi:"1215028931",billing:211489379,servicing:41589,ratio:5085},
+{npi:"1528126133",billing:245882155,servicing:65388,ratio:3760},
+{npi:"1639172810",billing:509260010,servicing:135377,ratio:3762},
+{npi:"1659315430",billing:276252681,servicing:82796,ratio:3337},
+{npi:"1225546575",billing:218299626,servicing:73535,ratio:2969},
+{npi:"1184779332",billing:493376372,servicing:188018,ratio:2624},
+{npi:"1013374222",billing:235663391,servicing:146807,ratio:1605},
+{npi:"1366580706",billing:253416240,servicing:163482,ratio:1550},
+];
+
+const hcpcsDesc = {
+"T1019":"Personal Care Services",
+"T1040":"Nursing Care, Waiver",
+"H0044":"Supported Housing",
+"T2023":"Day Habilitation, Waiver",
+"S5140":"Foster Care, Adult",
+"K0606":"Automatic Ext Defibrillator",
+"H0018":"Behavioral Health Short-Term Residential",
+"99199":"Unlisted Special Service",
+"A0427":"ALS Ambulance, Emergency",
+"G0156":"Home Health Aide Services",
+"A0429":"BLS Ambulance, Emergency",
+"99211":"Office Visit, Level 1",
+};
+
+const concentrationData = [
+{npi:"1376609297",code:"T1019",paid:5571605313,concPaid:5463223218,pct:98.05},
+{npi:"1922467554",code:"T1019",paid:3025874967,concPaid:3004460868,pct:99.29},
+{npi:"1962650622",code:"T1019",paid:1682424022,concPaid:1624390225,pct:96.55},
+{npi:"1073055208",code:"T1040",paid:1281885232,concPaid:1274402847,pct:99.42},
+{npi:"1932341898",code:"H0044",paid:996801122,concPaid:996688991,pct:99.99},
+{npi:"1124494059",code:"T2023",paid:780976224,concPaid:780976224,pct:100},
+{npi:"1245414721",code:"S5140",paid:598860245,concPaid:597874020,pct:99.84},
+{npi:"1164535274",code:"K0606",paid:503987184,concPaid:503987184,pct:100},
+{npi:"1073730347",code:"H0018",paid:490725903,concPaid:490725903,pct:100},
+];
+
+const revenueOutliers = [
+{code:"99199",desc:"Unlisted Special Service",median:5.31,outliers:[
+  {npi:"1538292768",perClaim:7409.48,paid:144129266},
+  {npi:"1376760835",perClaim:6461.84,paid:97580268},
+  {npi:"1770700221",perClaim:5704.61,paid:224835624},
+  {npi:"1710901939",perClaim:6288.46,paid:101715918},
+  {npi:"1780708263",perClaim:6259.25,paid:90884284},
+  {npi:"1235261009",perClaim:5862.86,paid:83070917},
+]},
+{code:"A0427",desc:"ALS Ambulance, Emergency",median:156.68,outliers:[
+  {npi:"1376554592",perClaim:1611.37,paid:868371743,name:"City of Chicago"},
+]},
+{code:"G0156",desc:"Home Health Aide Services",median:30.66,outliers:[
+  {npi:"1578683694",perClaim:3578.07,paid:84095464},
+  {npi:"1225159064",perClaim:1782.37,paid:54977151},
+  {npi:"1184758310",perClaim:2488.35,paid:43262531},
+]},
+{code:"A0429",desc:"BLS Ambulance, Emergency",median:124.05,outliers:[
+  {npi:"1376554592",perClaim:1739.44,paid:345448241,name:"City of Chicago"},
+]},
+{code:"99211",desc:"Office Visit, Level 1",median:13.50,outliers:[
+  {npi:"1427335140",perClaim:543.90,paid:89182447},
+  {npi:"1780639971",perClaim:491.01,paid:71153602},
+  {npi:"1770662348",perClaim:477.46,paid:42436807},
+]},
+];
+
+// ===== HELPERS =====
+const fmt = (n) => {
+  if(n>=1e12) return '$'+(n/1e12).toFixed(2)+'T';
+  if(n>=1e9) return '$'+(n/1e9).toFixed(1)+'B';
+  if(n>=1e6) return '$'+(n/1e6).toFixed(1)+'M';
+  if(n>=1e3) return '$'+(n/1e3).toFixed(0)+'K';
+  return '$'+n.toFixed(0);
+};
+const fmtN = (n) => {
+  if(n>=1e9) return (n/1e9).toFixed(1)+'B';
+  if(n>=1e6) return (n/1e6).toFixed(1)+'M';
+  if(n>=1e3) return (n/1e3).toFixed(0)+'K';
+  return n.toString();
+};
+const fmtX = (n) => n>=1000?fmtN(n):n.toFixed(0)+'x';
+
+// NPI Directory Lookup
+const npiDir = {
+"1013374222":{n:"Lsu Health Sciences Center Shreveport Faculty Group Practice",o:"Mitzi Green",t:"Director",c:"Shreveport, LA"},
+"1043531361":{n:"Elder Resource Management, Inc",o:"Anna Zaydenebrg",t:"president",c:"Pittsburgh, PA"},
+"1053533554":{n:"New Outlook, Inc.",o:"Carol Hepfinger",t:"Administrator",c:"Livonia, MI"},
+"1073055208":{n:"Compass Health, Inc.",o:"Teresa Porter",t:"Credentialing Manager",c:"Clinton, MO"},
+"1073730347":{n:"Ma-Department Of Social Services-Rehab",o:"Ellen Finnegan",t:"Chief Financial Officer",c:"Boston, MA"},
+"1073854451":{n:"New Jersey Division Of Developmental Disabilities",o:"Maribeth Robenolt",t:"Director, Waiver Unit",c:"Hamilton, NJ"},
+"1083765689":{n:"Alabama Department Of Mental Health And Mental Retardation",o:"John Houston",t:"Commissioner",c:"Montgomery, AL"},
+"1114088192":{n:"Delmarva Community Services Inc",o:"Santo Grande",t:"CEO",c:"Hurlock, MD"},
+"1114298841":{n:"Skillcare Health Services Inc",o:"Ogechi Morris",t:"ADMINISTRATOR",c:"Plano, TX"},
+"1114931391":{n:"Texas Department Of State Health",o:"Barbara Kelly-King",t:"Billing Branch Manager",c:"Austin, TX"},
+"1124127683":{n:"Arthur G James Cancer Hospital And Research Institute",o:"Ryan Goerlitz",t:"CHIEF FINANCIAL OFFICER",c:"Columbus, OH"},
+"1124494059":{n:"Tennessee Department Of Children'S Services",o:"Michael Cull",t:"Deputy Commissioner",c:"Nashville, TN"},
+"1164535274":{n:"Zoll Services LLC",o:"Julie Cole",t:"Manager, Compliance",c:"Pittsburgh, PA"},
+"1184758310":{n:"Springwell",o:"Kara Donellon",t:"Director of Finance",c:"Watertown, MA"},
+"1184779332":{n:"Scottish Rite Children'S Medical Center",o:"Ruth Fowler",t:"Chief Financial Officer",c:"Atlanta, GA"},
+"1194028969":{n:"Community Options, Inc.",o:"David Sweeney",t:"Chief Financial Officer",c:"Princeton, NJ"},
+"1215028931":{n:"San Joaquin Behavioral Health Services",o:"Genevieve Valentine",t:"BHS Director",c:"Stockton, CA"},
+"1215504824":{n:"Kaiser Foundation Health Plan Inc",o:"Xiaoyan Liu",t:"Executive Director",c:"Oakland, CA"},
+"1225060213":{n:"Maxim Healthcare Services, Inc.",o:"David Kowalczyk",t:"Controller",c:"Beaumont, TX"},
+"1225159064":{n:"Elder Services Of Cape Cod And The Islands",o:"Judy Sokoloski",t:"Chief Financial Officer",c:"South Dennis, MA"},
+"1225546575":{n:"Family Healthcare Network",o:"Kerry Hydash",t:"President & CEO",c:"Fresno, CA"},
+"1235261009":{n:"Rutland Mental Health Services",o:"Linda Heald",t:"Coordinator AR",c:"Rutland, VT"},
+"1245414721":{n:"Caregiver Homes Of Massachusetts, Inc",o:"Amy Smith",t:"Chief Compliance Officer",c:"Auburn, MA"},
+"1255623716":{n:"Tempus Unlimited, Inc.",o:"Larry Spencer",t:"CEO",c:"Stoughton, MA"},
+"1265772305":{n:"Association For The Multiple Impaired Blind, Inc.",o:"Aaron Soto",t:"Executive Director",c:"Brick, NJ"},
+"1265839906":{n:"Intra-National Home Care, LLC",o:"Dilli Adhikari",t:"CEO",c:"Columbus, OH"},
+"1336572692":{n:"Hope Pediatrics LLC",o:"Joyce Bulman",t:"V.P Quality & Compliance",c:"Richardson, TX"},
+"1346974763":{n:"Tusa Integrated Clinic LLC",o:"Rita Anagho",t:"Owner",c:"Tempe, AZ"},
+"1366573115":{n:"Crossroads LA. Inc.",o:"Beverly Duncan",t:"Executive Director",c:"New Orleans, LA"},
+"1366580706":{n:"Chartwell Community Services, Inc.",o:"Angel Stansbury",t:"Dir License & Regulatory Compliance",c:"Arlington, TX"},
+"1376554592":{n:"City Of Chicago",o:"Joel Flores",t:"Deputy Director",c:"Chicago, IL"},
+"1376609297":{n:"Tempus Unlimited, Inc.",o:"Larry Spencer",t:"Chief Executive Officer",c:"Stoughton, MA"},
+"1376760835":{n:"Health Care & Rehabilitation Services",o:"Edmund Moore",t:"CFO",c:"Bellows Falls, VT"},
+"1407430143":{n:"Lifeline, Inc",o:"Rhoda Makinde",t:"Director",c:"Washington, DC"},
+"1417027269":{n:"Access Quality Therapy Services, LLC",o:"Indira Mahabir",t:"Regional Director of Compliance",c:"San Antonio, TX"},
+"1417262056":{n:"Public Partnerships LLC",o:"Deborah Drexler",t:"Chief Legal Officer",c:"Latham, NY"},
+"1417271859":{n:"Nestar Med Care LLC",o:"Stella Umweni",t:"ADMINISTRATOR/DON",c:"Missouri City, TX"},
+"1427335140":{n:"DHHS IHS Phoenix Area",o:"Michelle Martinez",t:"Chief Executive Officer",c:"Whiteriver, AZ"},
+"1427577865":{n:"South Jersey Behavioral Health Resources, Inc.",o:"Theresa Wilson",t:"President/CEO",c:"Camden, NJ"},
+"1427588326":{n:"Entrusted Pediatric Home Care L.L.C.",o:"Nicholas Norwood",t:"CEO",c:"Austin, TX"},
+"1457665317":{n:"Pediatric Home Healthcare, LLC",o:"Dennis Hosley",t:"COO",c:"Mesquite, TX"},
+"1477004604":{n:"Youth Consultation Service, Inc",o:"Philip Defalco",t:"Sr Vice Pres/COO",c:"Newark, NJ"},
+"1487996096":{n:"San Rafael Healthcare, Inc",o:"John Farias",t:"President",c:"San Antonio, TX"},
+"1497172803":{n:"Neurointernational Healthcare, LLC",o:"Mary Rodenberg-Roberts",t:"VP & Sr Asst General Counsel",c:"Sarasota, FL"},
+"1528126133":{n:"Adelante Healthcare, Inc.",o:"Krystal Powell",t:"Revenue Cycle Director",c:"Phoenix, AZ"},
+"1528263910":{n:"County Of Santa Clara",o:"Sherri Terao",t:"Behavioral Health Director",c:"San Jose, CA"},
+"1538292768":{n:"Northeast Kingdom Human Services Inc Ds Waiver",o:"Eric Grims",t:"CHIEF EXECUTIVE OFFICER",c:"Newport, VT"},
+"1538649983":{n:"Consumer Direct Care Network Virginia",o:"Holly Stephens",t:"Legal Manager",c:"Missoula, MT"},
+"1548358542":{n:"Maxim Healthcare Services, Inc.",o:"Duane Brickhouse",t:"Regional VP of Finance",c:"Memphis, TN"},
+"1568428621":{n:"Mary M. Gooley Hemophilia Center Inc",o:"Tom Wilmarth",t:"President/CEO",c:"Rochester, NY"},
+"1578665048":{n:"Optum Medical Care Of New Jersey PC",o:"Gaurang Brahmbhatt",t:"CMO",c:"Secaucus, NJ"},
+"1578683694":{n:"Mystic VAlley Elder Services, Inc.",o:"Sean Hubacz",t:"Director of Finance",c:"Malden, MA"},
+"1578967386":{n:"Oaks Integrated Care, Inc",o:"Qindi Shi",t:"CFO",c:"Lumberton, NJ"},
+"1588259972":{n:"Accessible Space Inc.",o:"Jerry Kappeler",t:"Director",c:"Las Vegas, NV"},
+"1629436241":{n:"Department Of Intellectual And Developmental Disabilities, State Of Tn",o:"Lance Iverson",t:"Deputy Commissioner, Finance & Admi",c:"Nashville, TN"},
+"1639172810":{n:"Bowen Health Inc",o:"Jay Baumgartner",t:"CFO",c:"Warsaw, IN"},
+"1659315430":{n:"County Of Santa Cruz",o:"Connie Moreno-Peraza",t:"Health Services Agency Director",c:"Santa Cruz, CA"},
+"1659629301":{n:"At Home Care St. Louis CDS",o:"Carlita Vasser",t:"Owner/Director",c:"Bridgeton, MO"},
+"1669878567":{n:"Mountain Park Health Center",o:"John Swagert",t:"CEO",c:"Phoenix, AZ"},
+"1669982237":{n:"Wellspace Health",o:"Alasdair Porteus",t:"Chief Executive Officer",c:"Galt, CA"},
+"1699703827":{n:"Los Angeles County Department Of Mental Health",o:"Lisa Wong",t:"Director",c:"Los Angeles, CA"},
+"1699725143":{n:"Modivcare Solutions, LLC",o:"Scott Mccarty",t:"CEO",c:"Denver, CO"},
+"1700901725":{n:"New England Emergency Response Systems Inc",o:"Scott Kern",t:"Vice President & Treasurer",c:"Southfield, MI"},
+"1710176151":{n:"Guardiantrac. LLC",o:"John Carmichael",t:"Chief Executive Officer",c:"Sturgis, MI"},
+"1710901939":{n:"Washington County Mental Health Services, Inc.",o:"Heidi Hall",t:"WCMHS CFO",c:"Barre, VT"},
+"1730426156":{n:"Pediatric Home Healthcare, LLC",o:"Dennis Hosley",t:"COO",c:"Tyler, TX"},
+"1740221621":{n:"Liberty Dialysis - Hawaii LLC",o:"Barry Blanton",t:"Vice President",c:"Honolulu, HI"},
+"1740428002":{n:"Miracle Hands Healthcare Services",o:"Mercy Kimani",t:"Administrator",c:"Sugar Land, TX"},
+"1770662348":{n:"Cherokee Indian Hospital Authority",o:"Casey Cooper",t:"Hospital CEO",c:"Cherokee, NC"},
+"1770700221":{n:"Howard Center Inc",o:"Sandy Mcguire",t:"Chief Executive Officer",c:"Burlington, VT"},
+"1780639971":{n:"DHHS, PHS, NAIHS, Shiprock Hospital",o:"Fannessa Comer",t:"CEO",c:"Shiprock, NM"},
+"1780708263":{n:"Northwestern Counseling & Support Services",o:"Ted Mable",t:"Executive Director",c:"Saint Albans, VT"},
+"1821413287":{n:"Pediatric Private Duty Nursing, Inc",o:"Edward Pena",t:"CEO",c:"San Antonio, TX"},
+"1831401975":{n:"Atlas Home Health, Inc.",o:"Julia Shurhin",t:"Administrator",c:"Aurora, CO"},
+"1841823200":{n:"The Gregory Kistler Treatment Center, Inc.",o:"Jennifer Kistler",t:"Executive Director",c:"Fort Smith, AR"},
+"1861903122":{n:"Everas Community Services, Inc.",o:"Jennifer Rector",t:"Executive Director",c:"Somerset, NJ"},
+"1922467554":{n:"Freedom Care LLC",o:"Benjamin Wolf",t:"GC & CCO",c:"New Hyde Park, NY"},
+"1932341898":{n:"Mains'L FLorida, Inc.",o:"Teresa Williams",t:"President/Owner",c:"Brooklyn Park, MN"},
+"1932853918":{n:"Accurate Mobile LAb Services LLC",o:"Mohammed Abu Realh",t:"MEMBER MANAGER",c:"Hickory Hills, IL"},
+"1952346876":{n:"Aoc TX, LLC",o:"Jessica Riggs",t:"CEO",c:"Sherman, TX"},
+"1962158980":{n:"Lifeline Biosciences LLC",o:"Nadeem Khan",t:"Owner",c:"Downers Grove, IL"},
+"1962540369":{n:"Pediatric Services Of America, LLC",o:"Matthew Buckhalter",t:"CFO",c:"Mcallen, TX"},
+"1962650622":{n:"American Business Institute Corp",o:"Hao Li",t:"Administrator",c:"Flushing, NY"},
+"1962763375":{n:"Loving Hands Home Health Agency, Inc.",o:"Elier Gonzalez Martinez",t:"President/ Owner",c:"Fort Myers, FL"},
+"1972974921":{n:"Seds Healthcare, Inc",o:"Imaobong Nda",t:"PRESIDENT",c:"Katy, TX"},
+"1982757688":{n:"Alabama Department Of Mental Health And Mental Retardation",o:"John Houston",t:"Commissioner",c:"Montgomery, AL"},
+"1982887022":{n:"G B Cooley Hospital Services/PCA",o:"Jimmy Sanderlin",t:"Director of Finance",c:"West Monroe, LA"},
+"1568910677":{n:"",o:"Rushik Patel",t:"Executive Director",c:"Brooklyn, NY"},
+"1871753533":{n:"",o:"Wallace Saltclah",t:"CEO",c:"Window Rock, AZ"},
+"1528351285":{n:"",o:"Mohamed Matope",t:"Director",c:"Silver Spring, MD"},
+"1720292329":{n:"",o:"Elise Jones",t:"Behavioral Health Director",c:"Lucerne, CA"},
+"1255923827":{n:"",o:"Kevin Whatcott",t:"CEO",c:"Salt Lake City, UT"},
+"1851654909":{n:"",o:"Wanda Hobbs",t:"CEO",c:"Little Rock, AR"},
+"1265848675":{n:"",o:"Beth Caraccio",t:"Sr VP IDD Services",c:"Vineland, NJ"},
+"1972559565":{n:"",o:"David Kowalczyk",t:"VP of Finance",c:"Fresno, CA"},
+"1659039386":{n:"",o:"Sarah Smith-Clewell",t:"Assistant Cost Accountant",c:"Raritan, NJ"},
+"1407998842":{n:"",o:"William Muilenburg",t:"CFO",c:"River Vale, NJ"},
+"1184769242":{n:"",o:"Stan Gramke",t:"President",c:"Auburn Hills, MI"},
+"1003415035":{n:"",o:"Jason Coons",t:"Owner",c:"Winter Park, FL"},
+"1275911398":{n:"",o:"David Wyher",t:"President/CEO",c:"Raritan, NJ"},
+"1609953066":{n:"",o:"Melissa Ohlmacher",t:"Manager of Financial Services",c:"Orlando, FL"},
+"1699986034":{n:"",o:"David Sylvia",t:"CEO",c:"Los Angeles, CA"},
+"1275257917":{n:"",o:"Javan Lee",t:"Executive Leadership",c:"Glendale, AZ"},
+"1134250475":{n:"",o:"Jeanette Maillet",t:"CHIEF FINANCIAL OFFICER",c:"Hyde Park, MA"},
+"1598898603":{n:"",o:"Patty Bates",t:"Accounting Manager",c:"Sparta, NJ"},
+"1306182548":{n:"",o:"Hari Sabnani",t:"President & CEO",c:"Guaynabo, PR"},
+"1134500648":{n:"",o:"Naira Aslanyan",t:"COO",c:"Whippany, NJ"},
+"1720560030":{n:"",o:"Scott Hoffman",t:"Sr VP and Chief Financial Officer",c:"Tucson, AZ"},
+"1144868100":{n:"",o:"Justin Day",t:"Co-Founder/Executive Director",c:"Saint George, UT"},
+"1609858752":{n:"",o:"Bruce Bayes",t:"President CEO",c:"Largo, FL"},
+"1437296282":{n:"",o:"Jenine Miller",t:"Director",c:"Ukiah, CA"},
+"1821323940":{n:"",o:"David Reiss",t:"Executive Director",c:"Barrington, RI"},
+"1467071837":{n:"",o:"Michael Kassab",t:"CEO",c:"Sterling Heights, MI"},
+"1700037900":{n:"",o:"Talha Shamsi",t:"PRESIDENT",c:"Chicago, IL"},
+"1184817033":{n:"",o:"Carlos Gonzales",t:"CEO",c:"Cordova, TN"},
+"1952330797":{n:"",o:"Chris Sipes",t:"Regional VP of Finance",c:"Allentown, PA"},
+"1619171923":{n:"",o:"Jay Wolter",t:"President",c:"Belgrade, ME"},
+"1619595485":{n:"",o:"Christine Kemboi",t:"Owner",c:"Phoenix, AZ"},
+"1306103759":{n:"",o:"Richard Nelson",t:"President / CEO",c:"Edinburg, TX"},
+"1407271174":{n:"",o:"Sophie Davis",t:"Director",c:"Jackson, TN"},
+"1003213752":{n:"",o:"Moises Perez",t:"Administrator",c:"Phoenix, AZ"},
+"1770719858":{n:"",o:"Shandel Arkadie",t:"Administrator",c:"Aurora, CO"},
+"1588747059":{n:"",o:"June O'Brien",t:"Director",c:"Elma, WA"},
+"1689295636":{n:"",o:"Vincent Flores",t:"Executive Director",c:"Tucson, AZ"},
+"1700521200":{n:"",o:"Taylor Brown",t:"Owner",c:"Delta, CO"},
+"1407263569":{n:"",o:"Barry Blanton",t:"Vice President",c:"San Francisco, CA"},
+"1194261594":{n:"",o:"Daniel Harris",t:"Chief Financial Officer",c:"Juneau, AK"},
+"1003940438":{n:"",o:"Rebecca Singleton",t:"co-director",c:"Jonesboro, AR"},
+"1063520286":{n:"",o:"David Kowalczyk",t:"Regional VP of Finance",c:"San Bernardino, CA"},
+"1861691800":{n:"",o:"Manilal Mathai",t:"President/CEO",c:"Philadelphia, PA"},
+"1750969168":{n:"",o:"Steven Tupponce",t:"Director",c:"Aylett, VA"},
+"1477739175":{n:"",o:"Amanda Champagne",t:"Exe. Director of Family Services",c:"Northfield, NH"},
+"1578130597":{n:"",o:"Thomas Weinberg",t:"President and Chairman",c:"Honolulu, HI"},
+"1700969078":{n:"",o:"David Kowalczyk",t:"VP of Finance",c:"Pomona, CA"},
+"1699908269":{n:"",o:"Irene Manolias",t:"DPS",c:"Patchogue, NY"},
+"1194318097":{n:"",o:"Mohamed Mohamed",t:"CEO",c:"Glendale, AZ"},
+"1205426053":{n:"",o:"Imma Nzomo",t:"Administrator",c:"Mesa, AZ"},
+"1043211857":{n:"",o:"Nancy Giachino",t:"ADMINISTRATOR",c:"Citrus Heights, CA"},
+"1609938513":{n:"",o:"Sabrina Delong",t:"Compliance Officer",c:"Hershey, PA"},
+"1477890291":{n:"",o:"Thomas Weinberg",t:"Authorized Official",c:"Northridge, CA"},
+"1629370713":{n:"",o:"Hanseul Kang",t:"Superintendent",c:"Washington, DC"},
+"1710554571":{n:"",o:"Thomas Weinberg",t:"Chairman and President",c:"Aiea, HI"},
+"1134710379":{n:"",o:"Demarco Jefferson",t:"ceo",c:"Chandler, AZ"},
+"1881708642":{n:"",o:"Ryvkie Goldberger",t:"Board Member",c:"Brooklyn, NY"},
+"1023460342":{n:"",o:"Samuel Baptist",t:"Director",c:"Suffolk, VA"},
+"1932720943":{n:"",o:"Anish Nayar",t:"Nurse Manager",c:"Sterling, VA"},
+"1306016126":{n:"",o:"Virgil Davis",t:"Chief Executive Officer",c:"Dilkon, AZ"},
+"1326250150":{n:"",o:"Debra Kamen",t:"Program Director-TBI",c:"Worcester, MA"},
+"1881639342":{n:"",o:"Thomas Weinberg",t:"Authorized Official",c:"Panorama City, CA"},
+"1366736589":{n:"",o:"David Baiada",t:"President/CEO",c:"State College, PA"},
+"1124165923":{n:"",o:"Erik Akhund",t:"CEO",c:"Denver, CO"},
+"1720480908":{n:"",o:"Dena Ramsey",t:"Director",c:"Emporia, VA"},
+"1437534559":{n:"",o:"Brandi Turner",t:"Licensing Coordinator",c:"Fort Worth, TX"},
+"1336350966":{n:"",o:"Xavier Bancroft",t:"President & CEO",c:"Philadelphia, PA"},
+"1669878914":{n:"",o:"Moses Wertheimer",t:"Executive Director",c:"Monroe, NY"},
+"1427101351":{n:"",o:"Luke Bergmann",t:"Director, Behavioral Health Servic",c:"San Diego, CA"},
+"1801285960":{n:"",o:"Barry Blanton",t:"Vice President",c:"Oceanside, CA"},
+"1114187283":{n:"",o:"David Baiada",t:"President/CEO",c:"Lehighton, PA"},
+"1437726296":{n:"",o:"Thomas Weinberg",t:"Chairman and President",c:"Wahiawa, HI"},
+"1033671565":{n:"",o:"Michael Gray",t:"Owner",c:"Las Vegas, NV"},
+"1073587986":{n:"",o:"Samuel Wey",t:"VP, Licensure & Certification",c:"North Hollywood, CA"},
+"1609840347":{n:"",o:"Samuel Wey",t:"Sr Director Licensure&Certification",c:"Pomona, CA"},
+"1306878798":{n:"",o:"Maxima Hui",t:"VICE PRESIDENT/CFO",c:"Philadelphia, PA"},
+"1174610042":{n:"",o:"David Kowalczyk",t:"Controller",c:"Pittsburgh, PA"},
+"1275974172":{n:"",o:"Chioma Akabogu",t:"DIRECTOR",c:"Oak Brook, IL"},
+"1194479345":{n:"",o:"Joseph Kimani",t:"Owner",c:"Tempe, AZ"},
+"1093339202":{n:"",o:"Yasin Muhammad",t:"Chief Executive Officer",c:"Phoenix, AZ"},
+"1659483451":{n:"",o:"Barry Blanton",t:"Vice President",c:"National City, CA"},
+"1588708648":{n:"",o:"Ana Garcia",t:"Accounts Receivable Manager",c:"Miami, FL"},
+"1013981984":{n:"",o:"Samuel Wey",t:"Sr Dir Licensure & Certification",c:"Los Angeles, CA"},
+"1780216531":{n:"",o:"Thomas Weinberg",t:"Chairman/Authorized Official",c:"Waipahu, HI"},
+"1730553058":{n:"",o:"Ivory Price",t:"CEO",c:"Cottonwood, AZ"},
+"1619595865":{n:"",o:"Osam Hasasneh",t:"OWNER",c:"Gilbert, AZ"},
+"1932589140":{n:"",o:"Deborah Lewinson",t:"Executive Director",c:"Morris Plains, NJ"},
+"1770209488":{n:"",o:"Jasmine Robinson",t:"Administrator",c:"Tempe, AZ"},
+"1689881575":{n:"",o:"Paul Broussard",t:"CEO",c:"Lafayette, LA"},
+"1366162588":{n:"",o:"Thomas Weinberg",t:"President and chairman",c:"Hilo, HI"},
+"1639299274":{n:"",o:"Cindy Berry",t:"Sr. Executive Director",c:"Rowlett, TX"},
+"1316157522":{n:"",o:"Iqbal Shariff",t:"President",c:"Chicago, IL"},
+"1639775927":{n:"",o:"Ronn Hale",t:"CEO/Founder",c:"Avondale, AZ"},
+"1003969114":{n:"",o:"Roy Williams",t:"ADMINISTRATOR",c:"Palmdale, CA"},
+"1487180097":{n:"",o:"Barry Blanton",t:"Vice President",c:"Mililani, HI"},
+"1538438544":{n:"",o:"Maria Etrata",t:"President/CEO",c:"Waipahu, HI"},
+"1356073902":{n:"",o:"Roman Rozhansky",t:"President",c:"Los Angeles, CA"},
+"1144897901":{n:"",o:"Thomas Weinberg",t:"Chairman and President",c:"Kaneohe, HI"},
+"1790443216":{n:"",o:"Ronnie Hale",t:"Owner",c:"Tempe, AZ"},
+"1841417292":{n:"",o:"Edmund Moore",t:"CFO",c:"Bellows Falls, VT"},
+"1093340606":{n:"",o:"Reginald Taylor",t:"President",c:"Phoenix, AZ"},
+"1992944557":{n:"",o:"Yvonne Gurule",t:"Director of Marketing &  Contracts",c:"Albuquerque, NM"},
+"1992172019":{n:"",o:"Shanti Bansal",t:"Manager",c:"Cleveland, TX"},
+"1639633068":{n:"",o:"Adella Cordova",t:"CEO",c:"Casa Grande, AZ"},
+"1033143706":{n:"",o:"Adam Cohen",t:"CEO",c:"Salt Lake City, UT"},
+"1982962353":{n:"",o:"Christine Simiriglia",t:"President & CEO",c:"Philadelphia, PA"},
+"1801496054":{n:"",o:"Inyang Udo-Ema",t:"CEO",c:"Mesa, AZ"},
+"1093864589":{n:"",o:"Stephanie Thelen",t:"Compliance & Policy Analyst",c:"Tacoma, WA"},
+"1467507657":{n:"",o:"Nick Westfall",t:"CEO",c:"Boynton Beach, FL"},
+"1194451989":{n:"",o:"Nilesh Patel",t:"Dr",c:"Phoenix, AZ"},
+"1033213186":{n:"",o:"Thomas Dimarco",t:"Chief Executive Officer",c:"Pittsburgh, PA"},
+"1679573083":{n:"",o:"Lisa-Marie Coppolino",t:"Director, Patient Accounts",c:"Valhalla, NY"},
+"1285217364":{n:"",o:"Yasin Siyad",t:"Operator",c:"Hopkins, MN"},
+"1467174482":{n:"",o:"Esperance Mapendo",t:"OWNER",c:"Glendale, AZ"},
+"1376263657":{n:"",o:"Fabrice Mvuyekure",t:"OWNER",c:"Phoenix, AZ"},
+"1598828436":{n:"",o:"Margy Mayfield",t:"Director of Clinical Services",c:"Salinas, CA"},
+"1447827472":{n:"",o:"Thomas Weinberg",t:"President and Chairman",c:"Kapolei, HI"},
+"1962680751":{n:"",o:"Kevin Noel",t:"Chief Financial Officer",c:"Philadelphia, PA"},
+"1932859600":{n:"",o:"Isaiah Bankole",t:"COE/Co-Owner",c:"Phoenix, AZ"},
+"1982361952":{n:"",o:"Rosa Frazier",t:"Owner",c:"Phoenix, AZ"},
+"1285708461":{n:"",o:"Randyl Schelble",t:"Director of Exceptional Children Se",c:"Salt Lake City, UT"},
+"1396081667":{n:"",o:"Nohad Loabneh",t:"President/CEO",c:"Scottsdale, AZ"},
+"1104173855":{n:"",o:"Christopher Williamson",t:"Vice President Operations",c:"Louisville, KY"},
+"1629780432":{n:"",o:"Valentine Busogi",t:"CEO",c:"Phoenix, AZ"},
+"1588071013":{n:"",o:"Jason Shaw",t:"President",c:"Huntington, IN"},
+"1457078347":{n:"",o:"Paul Bangura",t:"COE/ADMINSTRATION",c:"Glendale, AZ"},
+"1982356549":{n:"",o:"Randell Williams",t:"OWNER",c:"Maricopa, AZ"},
+"1730883430":{n:"",o:"Magdalena Salas",t:"CEO",c:"Stockton, CA"},
+"1487625190":{n:"",o:"Thomas Weinberg",t:"Authorized Official",c:"Long Beach, CA"},
+"1396836219":{n:"",o:"Jaclyn Diana",t:"Administrator",c:"Brooklyn, NY"},
+"1114159449":{n:"",o:"Leticia Dexter",t:"Chief Executive Officer",c:"Aiea, HI"},
+"1174818702":{n:"",o:"Jason Crews",t:"Executive Director",c:"Waynesboro, TN"},
+"1578160909":{n:"",o:"Thomas Weinberg",t:"Chairman & Authorized Official",c:"Waianae, HI"},
+"1932253267":{n:"",o:"Jill Olson",t:"Privacy Officer",c:"Milwaukee, WI"},
+"1881283414":{n:"",o:"Eric Maughan",t:"Adminstrator",c:"Phoenix, AZ"},
+"1770123614":{n:"",o:"Niesha Allen",t:"Director",c:"Phoenix, AZ"},
+"1235787599":{n:"",o:"Yolanda Robinson",t:"Founder/CEO",c:"Phoenix, AZ"},
+"1669119632":{n:"",o:"Mitchell Clardy",t:"CEO",c:"Phoenix, AZ"},
+"1437156635":{n:"",o:"Pamela Reuther",t:"COO",c:"New Castle, DE"},
+"1790732428":{n:"",o:"David Baiada",t:"President/CEO",c:"Wilkes-Barre, PA"},
+"1154437879":{n:"",o:"Traci Anderson-Araujo",t:"President",c:"Greenbelt, MD"},
+"1861520272":{n:"",o:"Alaina Macia",t:"CEO",c:"Lake St Louis, MO"},
+"1750304044":{n:"",o:"Paul Kirkham",t:"Administrator",c:"Mountain City, TN"},
+"1750987053":{n:"",o:"Gayle Washington",t:"Credentialing Coordinator",c:"Aurora, CO"},
+"1538583125":{n:"",o:"Frances Hernandez",t:"RCM Manager",c:"Scottsdale, AZ"},
+"1427099332":{n:"",o:"Barry Blanton",t:"Vice President",c:"Ewa Beach, HI"},
+"1740800366":{n:"",o:"Ashley Hillsman",t:"owner",c:"Phoenix, AZ"},
+"1952937286":{n:"",o:"Rosa Norris",t:"Owner",c:"Goodyear, AZ"},
+"1053920454":{n:"",o:"Thomas Heard",t:"CEO",c:"Gilbert, AZ"},
+"1649277559":{n:"",o:"Mark Games",t:"President & CEO",c:"Wheeling, WV"},
+"1801463823":{n:"",o:"Thomas Weinberg",t:"President and Chairman",c:"Honolulu, HI"},
+"1083654487":{n:"",o:"Robb Cagann",t:"Fire Chief",c:"Elgin, IL"},
+"1831269315":{n:"",o:"Susan Wiviott",t:"Executive Director",c:"New York, NY"},
+"1710923677":{n:"",o:"Thomas Weinberg",t:"Authorized Official",c:"Sherman Oaks, CA"},
+"1104984830":{n:"",o:"Thomas Weinberg",t:"Authorized Official",c:"Rosemead, CA"},
+"1811174345":{n:"",o:"Gustavo Moral",t:"President",c:"Manchester, NH"},
+"1164843835":{n:"",o:"Donna Lodato",t:"CEO",c:"Fort Lauderdale, FL"},
+"1225476021":{n:"",o:"Osama Saad",t:"MANAGER",c:"Laveen, AZ"},
+"1992727663":{n:"",o:"Trisha Lollo",t:"President",c:"Saint Louis, MO"},
+"1841524360":{n:"",o:"Lakhi Sakhrani",t:"CEO",c:"San Gabriel, CA"},
+"1932788486":{n:"",o:"Lametrie Singletary",t:"administration",c:"Phoenix, AZ"},
+"1194453688":{n:"",o:"Aline Indatwa",t:"Owner",c:"Phoenix, AZ"},
+"1295868305":{n:"",o:"Ruben Imperial",t:"BEHAVIORAL HEALTH INTERIM DIRECTOR",c:"Ceres, CA"},
+"1851332894":{n:"",o:"Barry Blanton",t:"Vice President",c:"Hilo, HI"},
+"1881735389":{n:"",o:"Andy Pond",t:"President",c:"Cranston, RI"},
+"1992433627":{n:"",o:"Daniel Narvaez",t:"President",c:"Cathedral City, CA"},
+"1003352402":{n:"",o:"Daniel Harris",t:"VP/Chief Financial Officer",c:"Wrangell, AK"},
+"1487810933":{n:"",o:"Barry Blanton",t:"Vice President",c:"Kailua, HI"},
+"1427394865":{n:"",o:"Susan Berglund",t:"CFO",c:"Anaheim, CA"},
+"1922733641":{n:"",o:"Daud Koleosho",t:"ADMIN",c:"Phoenix, AZ"},
+"1164684825":{n:"",o:"Barry Blanton",t:"Vice President",c:"Waipahu, HI"},
+"1083617823":{n:"",o:"Michael Hassing",t:"CEO",c:"Martinsburg, WV"},
+"1568100865":{n:"",o:"Margret Waithaka",t:"Owner",c:"Phoenix, AZ"},
+"1932140811":{n:"",o:"Barry Blanton",t:"Vice President",c:"Wailuku, HI"},
+"1689293177":{n:"",o:"Solomon Anthony",t:"Owner",c:"Phoenix, AZ"},
+"1427723683":{n:"",o:"Yvette Umugwaneza",t:"CEO",c:"Phoenix, AZ"},
+"1982675682":{n:"",o:"Thomas Weinberg",t:"Authorized Official",c:"Los Angeles, CA"},
+"1750385308":{n:"",o:"Howard Jaffe",t:"President",c:"Winter Park, FL"},
+"1023412129":{n:"",o:"Thomas Weinberg",t:"Senior Vice President",c:"Beverly Hills, CA"},
+"1336614478":{n:"",o:"Jay Wolter",t:"President",c:"Hanover, NH"},
+"1720716608":{n:"",o:"Jimmy Muyumbu",t:"Owner",c:"Phoenix, AZ"},
+"1174689665":{n:"",o:"Michael Pastier",t:"Sr Vice President",c:"Brooklyn, NY"},
+"1821722778":{n:"",o:"Mireille Mukiza",t:"Owner",c:"Phoenix, AZ"},
+"1114133246":{n:"",o:"Stacey Peterson",t:"Assistant Director",c:"Aurora, IL"},
+"1891839981":{n:"",o:"Tracy Olsen",t:"Business Administrator",c:"Spanish Fork, UT"},
+"1447477815":{n:"",o:"Eugene Peltola",t:"President & CEO",c:"Bethel, AK"},
+"1720050826":{n:"",o:"Greg Castronovo",t:"Chief",c:"Rockford, IL"},
+"1740634286":{n:"",o:"Theresa Cameron",t:"Account Services Manager",c:"Chico, CA"},
+"1528477296":{n:"",o:"William Mickens",t:"President",c:"North Chesterfield, VA"},
+"1407504749":{n:"",o:"John Blaylock",t:"Owner/Admin",c:"Phoenix, AZ"}
+};
+const npiName = (npi) => npiDir[npi] ? npiDir[npi].n : 'NPI '+npi;
+const npiOfficial = (npi) => npiDir[npi] ? npiDir[npi].o : '';
+const npiTitle = (npi) => npiDir[npi] ? npiDir[npi].t : '';
+const npiCity = (npi) => npiDir[npi] ? npiDir[npi].c : '';
+const npiLinkedIn = (npi) => {
+  if(!npiDir[npi]) return '';
+  const q = encodeURIComponent(npiDir[npi].o + ' ' + npiDir[npi].n);
+  return 'https://www.linkedin.com/search/results/all/?keywords='+q;
+};
+
+Chart.defaults.color = '#9a9898';
+Chart.defaults.borderColor = 'rgba(42,42,52,.6)';
+Chart.defaults.font.family = "'JetBrains Mono', monospace";
+Chart.defaults.font.size = 11;
+
+// ===== 1: TREND CHART =====
+new Chart(document.getElementById('trendChart'),{
+  type:'line',
+  data:{
+    labels: monthlySpending.map(d=>d.month),
+    datasets:[{
+      data: monthlySpending.map(d=>d.totalPaid),
+      borderColor:'#c8a84e',
+      backgroundColor:'rgba(200,168,78,.08)',
+      fill:true,
+      tension:.3,
+      pointRadius:0,
+      pointHoverRadius:5,
+      pointHoverBackgroundColor:'#c8a84e',
+      borderWidth:2,
+    }]
+  },
+  options:{
+    responsive:true,
+    maintainAspectRatio:false,
+    plugins:{legend:{display:false},tooltip:{
+      callbacks:{label:ctx=>fmt(ctx.parsed.y)},
+      backgroundColor:'#1a1a22',borderColor:'#2a2a34',borderWidth:1,
+      titleFont:{family:"'JetBrains Mono'",size:11},bodyFont:{family:"'JetBrains Mono'",size:12}
+    }},
+    scales:{
+      x:{grid:{display:false},ticks:{maxTicksLimit:12,font:{size:10}}},
+      y:{grid:{color:'rgba(42,42,52,.4)'},ticks:{callback:v=>fmt(v),font:{size:10}},beginAtZero:true}
+    }
+  }
+});
+document.getElementById('trendChart').parentElement.style.height='350px';
+
+// ===== 2: FLOW DIAGRAM =====
+(function buildFlow(){
+  const c=document.getElementById('flowDiagram');
+  const totalProcPaid=topProcedures.reduce((s,p)=>s+p.totalPaid,0);
+  const otherProcPaid=1093562833512-totalProcPaid;
+
+  let html=`<div class="flow-row">`;
+  // Source column
+  html+=`<div class="flow-col" style="flex:0 0 200px">
+    <div class="flow-col-header">Source</div>
+    <div class="flow-node source" style="height:100%;display:flex;align-items:center;justify-content:center;flex-direction:column">
+      <div style="font-family:'Space Grotesk',sans-serif;font-size:1.4rem;font-weight:700;color:var(--blue2)">MEDICAID</div>
+      <div class="famount" style="color:var(--blue2);margin-top:4px">$1.09T</div>
+    </div>
+  </div>`;
+
+  // Arrow col
+  html+=`<div style="flex:0 0 40px;display:flex;align-items:center;justify-content:center">
+    <svg width="30" height="100%" style="min-height:400px"><defs><marker id="ah" markerWidth="6" markerHeight="4" refX="5" refY="2" orient="auto"><polygon points="0 0, 6 2, 0 4" fill="#5c5c5c"/></marker></defs>`;
+  for(let i=0;i<10;i++){
+    const y=40+i*38;
+    html+=`<line x1="0" y1="200" x2="28" y2="${y}" stroke="#5c5c5c" stroke-width="1" marker-end="url(#ah)" opacity=".4"/>`;
+  }
+  html+=`</svg></div>`;
+
+  // Procedures column
+  html+=`<div class="flow-col" style="flex:1.2">
+    <div class="flow-col-header">Procedure Category</div>`;
+  topProcedures.forEach((p,i)=>{
+    const cls=i<3?'warn':'normal';
+    html+=`<div class="flow-node ${cls}"><span class="fname">${p.code} ${p.desc}</span><span class="famount">${fmt(p.totalPaid)}</span></div>`;
+  });
+  html+=`</div>`;
+
+  // Arrow col 2
+  html+=`<div style="flex:0 0 40px;display:flex;align-items:center;justify-content:center">
+    <svg width="30" height="100%" style="min-height:400px"><defs><marker id="ah2" markerWidth="6" markerHeight="4" refX="5" refY="2" orient="auto"><polygon points="0 0, 6 2, 0 4" fill="#5c5c5c"/></marker></defs>`;
+  for(let i=0;i<10;i++){
+    const y=40+i*38;
+    html+=`<line x1="0" y1="${y}" x2="28" y2="${y}" stroke="${i<3?'rgba(255,59,48,.4)':'#5c5c5c'}" stroke-width="1" marker-end="url(#ah2)" opacity=".5"/>`;
+  }
+  html+=`</svg></div>`;
+
+  // Providers column
+  html+=`<div class="flow-col" style="flex:1">
+    <div class="flow-col-header">Top Billing Providers</div>`;
+  topProviders.forEach((p,i)=>{
+    const cls=i<3?'danger':'normal';
+    const nm=npiDir[p.npi]?npiDir[p.npi].n:p.name;
+    const off=npiOfficial(p.npi);
+    const ttl=npiTitle(p.npi);
+    html+=`<div class="flow-node ${cls}" title="${off?off+', '+ttl:''}"><span class="fname">${nm}</span><span class="famount">${fmt(p.totalPaid)}</span></div>`;
+  });
+  html+=`</div>`;
+
+  html+=`</div>`;
+  c.innerHTML=html;
+})();
+
+// ===== 3: SCATTER CHART =====
+new Chart(document.getElementById('scatterChart'),{
+  type:'bubble',
+  data:{
+    datasets:[{
+      label:'Critical',
+      data:compositeScores.filter(d=>d.score>=80).map(d=>({x:d.cpb,y:d.ppc,r:Math.max(4,Math.sqrt(d.paid/1e6)*1.5),npi:d.npi,score:d.score,paid:d.paid})),
+      backgroundColor:'rgba(255,59,48,.5)',borderColor:'rgba(255,59,48,.8)',borderWidth:1
+    },{
+      label:'High',
+      data:compositeScores.filter(d=>d.score>=70&&d.score<80).map(d=>({x:d.cpb,y:d.ppc,r:Math.max(4,Math.sqrt(d.paid/1e6)*1.5),npi:d.npi,score:d.score,paid:d.paid})),
+      backgroundColor:'rgba(255,149,0,.4)',borderColor:'rgba(255,149,0,.7)',borderWidth:1
+    },{
+      label:'Medium',
+      data:compositeScores.filter(d=>d.score<70).map(d=>({x:d.cpb,y:d.ppc,r:Math.max(4,Math.sqrt(d.paid/1e6)*1.5),npi:d.npi,score:d.score,paid:d.paid})),
+      backgroundColor:'rgba(255,214,10,.3)',borderColor:'rgba(255,214,10,.6)',borderWidth:1
+    }]
+  },
+  options:{
+    responsive:true,
+    maintainAspectRatio:false,
+    plugins:{
+      legend:{display:false},
+      tooltip:{
+        callbacks:{
+          label:ctx=>{
+            const d=ctx.raw;
+            return [npiName(d.npi),`NPI: ${d.npi}`,`Official: ${npiOfficial(d.npi)||'N/A'}`,`Score: ${d.score}`,`Claims/Bene: ${d.x}`,`$/Claim: $${d.y.toFixed(0)}`,`Total: ${fmt(d.paid)}`];
+          }
+        },
+        backgroundColor:'#1a1a22',borderColor:'#2a2a34',borderWidth:1
+      }
+    },
+    scales:{
+      x:{title:{display:true,text:'Claims per Beneficiary',font:{size:11}},grid:{color:'rgba(42,42,52,.3)'}},
+      y:{title:{display:true,text:'Avg $ per Claim',font:{size:11}},grid:{color:'rgba(42,42,52,.3)'},ticks:{callback:v=>'$'+v}}
+    }
+  }
+});
+document.getElementById('scatterChart').parentElement.style.height='420px';
+
+// ===== 4: CASE STUDIES =====
+const cases = [
+  {
+    severity:'critical',title:'#1 Risk: T1019 Personal Care Mill',amount:'$208M',amountClass:'red',
+    detail:'NPI 1568910677 (Exec Dir: Rushik Patel, Brooklyn NY) — Composite score 85.6. Billed $208M across 1.4M claims with 98.8% concentration in T1019 Personal Care Services. 25x volume spike.',
+    metrics:[{label:'Score 85.6',cls:'bad'},{label:'98.8% T1019',cls:'bad'},{label:'25x spike',cls:'bad'},{label:'23.3 claims/bene',cls:'warn'}],
+    expand:`<p><strong>NPI 1568910677</strong> is the highest-risk provider in the revised analysis. Key anomalies:</p>
+    <table><thead><tr><th>Signal</th><th>Value</th><th>Benchmark</th><th>Assessment</th></tr></thead><tbody>
+    <tr><td>Composite Score</td><td class="red">85.6</td><td>&lt;30 normal</td><td class="red">Highest in dataset</td></tr>
+    <tr><td>Total Paid</td><td class="red">$208.3M</td><td>—</td><td class="red">Massive volume</td></tr>
+    <tr><td>Top Code Share</td><td class="red">98.8%</td><td>&lt;50% typical</td><td class="red">Near-total concentration</td></tr>
+    <tr><td>Claims/Beneficiary</td><td class="red">23.3</td><td>~3-5 normal</td><td class="red">5-8x expected</td></tr>
+    <tr><td>Max Spike Ratio</td><td class="red">25.4x</td><td>&lt;2x normal</td><td class="red">Sudden billing explosion</td></tr>
+    <tr><td>Pricing Z-Score</td><td class="red">127.0</td><td>&lt;3 normal</td><td class="red">Extreme pricing anomaly</td></tr>
+    </tbody></table>
+    <p style="margin-top:12px">Flags: PRICING_Z&ge;5, SPIKE&ge;5X, HIGH_INTENSITY, TOP_CODE&ge;90%</p>`
+  },
+  {
+    severity:'critical',title:'Code 99199 Abuse',amount:'$960M+',amountClass:'red',
+    detail:'6 providers bill "Unlisted Special Service" at $5,000-$7,400 per claim. The national median is $5.31.',
+    metrics:[{label:'1,000x+ median',cls:'bad'},{label:'6 providers',cls:'neutral'},{label:'z-score >10',cls:'bad'}],
+    expand:`<p>Code 99199 is a catch-all "unlisted special service" code. Most providers bill a few dollars. These 6 Vermont/VT developmental disability providers bill thousands:</p>
+    <table><thead><tr><th>Organization</th><th>Official</th><th>$/Claim</th><th>Ratio</th><th>Total Paid</th></tr></thead><tbody>
+    <tr><td>NE Kingdom Human Services<br><span style="font-size:10px;color:var(--text3)">Newport, VT</span></td><td><a href="${'https://www.linkedin.com/search/results/all/?keywords='+encodeURIComponent('Eric Grims NE Kingdom Human Services')}" target="_blank" style="color:var(--blue2);text-decoration:none">Eric Grims</a>, CEO</td><td class="red">$7,409</td><td class="red">1,397x</td><td>$144.1M</td></tr>
+    <tr><td>Health Care & Rehab Services<br><span style="font-size:10px;color:var(--text3)">Bellows Falls, VT</span></td><td><a href="${'https://www.linkedin.com/search/results/all/?keywords='+encodeURIComponent('Edmund Moore Health Care Rehabilitation Services')}" target="_blank" style="color:var(--blue2);text-decoration:none">Edmund Moore</a>, CFO</td><td class="red">$6,462</td><td class="red">1,218x</td><td>$97.6M</td></tr>
+    <tr><td>Washington County Mental Health<br><span style="font-size:10px;color:var(--text3)">Barre, VT</span></td><td><a href="${'https://www.linkedin.com/search/results/all/?keywords='+encodeURIComponent('Heidi Hall Washington County Mental Health')}" target="_blank" style="color:var(--blue2);text-decoration:none">Heidi Hall</a>, CFO</td><td class="red">$6,288</td><td class="red">1,185x</td><td>$101.7M</td></tr>
+    <tr><td>Northwestern Counseling & Support<br><span style="font-size:10px;color:var(--text3)">Saint Albans, VT</span></td><td><a href="${'https://www.linkedin.com/search/results/all/?keywords='+encodeURIComponent('Ted Mable Northwestern Counseling Support Services')}" target="_blank" style="color:var(--blue2);text-decoration:none">Ted Mable</a>, Exec Dir</td><td class="red">$6,259</td><td class="red">1,180x</td><td>$90.9M</td></tr>
+    <tr><td>Howard Center Inc<br><span style="font-size:10px;color:var(--text3)">Burlington, VT</span></td><td><a href="${'https://www.linkedin.com/search/results/all/?keywords='+encodeURIComponent('Sandy McGuire Howard Center Burlington')}" target="_blank" style="color:var(--blue2);text-decoration:none">Sandy McGuire</a>, CEO</td><td class="red">$5,705</td><td class="red">1,075x</td><td>$224.8M</td></tr>
+    <tr><td>Rutland Mental Health Services<br><span style="font-size:10px;color:var(--text3)">Rutland, VT</span></td><td><a href="${'https://www.linkedin.com/search/results/all/?keywords='+encodeURIComponent('Linda Heald Rutland Mental Health Services')}" target="_blank" style="color:var(--blue2);text-decoration:none">Linda Heald</a>, Coordinator</td><td class="red">$5,863</td><td class="red">1,105x</td><td>$83.1M</td></tr>
+    </tbody></table>`
+  },
+  {
+    severity:'critical',title:'City of Chicago Ambulance',amount:'$1.22B',amountClass:'red',
+    detail:'City of Chicago (NPI 1376554592, Deputy Dir: Joel Flores) bills ALS ambulance at $1,611/ride (median $157) and BLS at $1,739/ride (median $124). 10-14x the national rate.',
+    metrics:[{label:'10-14x median',cls:'bad'},{label:'$868M ALS',cls:'bad'},{label:'$345M BLS',cls:'bad'}],
+    expand:`<p>The City of Chicago&apos;s fire department ambulance billing is dramatically above national norms:</p>
+    <table><thead><tr><th>Code</th><th>Description</th><th>Their $/Claim</th><th>Median</th><th>Ratio</th><th>Total</th></tr></thead><tbody>
+    <tr><td>A0427</td><td>ALS Emergency</td><td class="red">$1,611</td><td>$157</td><td class="red">10.3x</td><td>$868M</td></tr>
+    <tr><td>A0429</td><td>BLS Emergency</td><td class="red">$1,739</td><td>$124</td><td class="red">14.0x</td><td>$345M</td></tr>
+    <tr><td>A0425</td><td>BLS Mileage</td><td>$11.65</td><td>~$10</td><td>~1x</td><td>$9M</td></tr>
+    </tbody></table>
+    <p style="margin-top:12px">Note: While municipal ambulance services can have higher costs, a 10-14x premium warrants investigation.</p>`
+  },
+  {
+    severity:'critical',title:'Pass-Through Billing',amount:'$559M',amountClass:'red',
+    detail:'Alabama Dept of Mental Health (NPI 1083765689, Commissioner: John Houston) bills $559M but only $1,363 as servicing provider. A ratio of 410,491x suggests pass-through billing.',
+    metrics:[{label:'410,491x ratio',cls:'bad'},{label:'84 months active',cls:'neutral'},{label:'17 procedures',cls:'neutral'}],
+    expand:`<p><strong>Alabama Dept of Mental Health</strong> (Montgomery, AL) — Commissioner: <a href="https://www.linkedin.com/search/results/all/?keywords=${encodeURIComponent('John Houston Alabama Department Mental Health')}" target="_blank" style="color:var(--blue2)">John Houston</a><br>Appears as a billing entity collecting hundreds of millions while performing almost no actual services:</p>
+    <table><thead><tr><th>Role</th><th>Total Paid</th><th>Claims</th></tr></thead><tbody>
+    <tr><td>As Billing Provider</td><td class="red">$559,483,344</td><td>11,242,943</td></tr>
+    <tr><td>As Servicing Provider</td><td>$1,363</td><td>14,859</td></tr>
+    </tbody></table>
+    <p style="margin-top:12px">Other extreme cases:<br>&bull; <strong>Mountain Park Health Center</strong>, Phoenix AZ (CEO: <a href="https://www.linkedin.com/search/results/all/?keywords=${encodeURIComponent('John Swagert Mountain Park Health Center')}" target="_blank" style="color:var(--blue2)">John Swagert</a>) — $352M billing/$32K servicing, 10,963x ratio<br>&bull; <strong>Optum Medical Care of NJ</strong>, Secaucus NJ (CMO: <a href="https://www.linkedin.com/search/results/all/?keywords=${encodeURIComponent('Gaurang Brahmbhatt Optum Medical Care')}" target="_blank" style="color:var(--blue2)">Gaurang Brahmbhatt</a>) — $219M/$30K, 7,359x ratio</p>`
+  },
+  {
+    severity:'critical',title:'Home Health Aide Overbilling',amount:'$84M',amountClass:'orange',
+    detail:'Mystic Valley Elder Services (NPI 1578683694, Dir of Finance: Sean Hubacz, Malden MA) bills home health aide visits (G0156) at $3,578-$4,872/claim. The median is $30.66 — 117x.',
+    metrics:[{label:'117x median',cls:'bad'},{label:'z-score 12.88',cls:'bad'},{label:'23,503 claims',cls:'neutral'}],
+    expand:`<p>Consistent overbilling across 66 months (Jan 2018 - Jun 2023). Per-claim rate actually <em>increased</em> over time:</p>
+    <table><thead><tr><th>Period</th><th>Avg $/Claim</th><th>Median</th><th>Ratio</th></tr></thead><tbody>
+    <tr><td>2018</td><td class="red">$3,043</td><td>$30.66</td><td class="red">99x</td></tr>
+    <tr><td>2020</td><td class="red">$3,604</td><td>$30.66</td><td class="red">118x</td></tr>
+    <tr><td>2022</td><td class="red">$4,038</td><td>$30.66</td><td class="red">132x</td></tr>
+    <tr><td>2023</td><td class="red">$4,536</td><td>$30.66</td><td class="red">148x</td></tr>
+    </tbody></table>`
+  },
+  {
+    severity:'high',title:'1,017x Volume Spike',amount:'$7.3M',amountClass:'orange',
+    detail:'Lifeline Biosciences LLC (NPI 1962158980, Owner: Nadeem Khan, Downers Grove IL): $10K in Jul-Aug 2023, then $7.3M in Dec 2023. A 1,017x spike from near-zero.',
+    metrics:[{label:'1,017x spike',cls:'bad'},{label:'From $10K to $7.3M',cls:'bad'},{label:'3 months total',cls:'warn'}],
+    expand:`<p>This provider barely existed before the spike:</p>
+    <table><thead><tr><th>Month</th><th>Claims</th><th>Beneficiaries</th><th>Paid</th></tr></thead><tbody>
+    <tr><td>Jul 2023</td><td>36</td><td>36</td><td>$3,824</td></tr>
+    <tr><td>Aug 2023</td><td>73</td><td>73</td><td>$10,594</td></tr>
+    <tr><td>Dec 2023</td><td class="red">48,490</td><td class="red">21,566</td><td class="red">$7,333,063</td></tr>
+    </tbody></table>
+    <p style="margin-top:12px">Other spikes:<br>&bull; <strong>Consumer Direct Care Network VA</strong> (80x, $5.6M)<br>&bull; <strong>Texas Dept of State Health</strong> (53x, $8.4M)<br>&bull; <strong>Arthur G James Cancer Hospital</strong> (42x, $6.5M)</p>`
+  },
+  {
+    severity:'high',title:'Billing Intensity Outliers',amount:'$14.5M+',amountClass:'orange',
+    detail:'At Home Care St. Louis CDS (NPI 1659629301, Owner: Carlita Vasser) files 101.5 claims per beneficiary (99th percentile is ~38). Suggests phantom billing.',
+    metrics:[{label:'101 claims/bene',cls:'bad'},{label:'99th pctile: ~38',cls:'warn'},{label:'z-score 13.36',cls:'bad'}],
+    expand:`<p>Top billing intensity outliers (>$10M total, >99th percentile claims/beneficiary):</p>
+    <table><thead><tr><th>Organization</th><th>Official</th><th>Claims/Bene</th><th>Total Paid</th></tr></thead><tbody>
+    <tr><td>At Home Care St. Louis CDS<br><span style="font-size:10px;color:var(--text3)">Bridgeton, MO</span></td><td><a href="https://www.linkedin.com/search/results/all/?keywords=${encodeURIComponent('Carlita Vasser At Home Care St Louis')}" target="_blank" style="color:var(--blue2)">Carlita Vasser</a>, Owner</td><td class="red">101.6</td><td>$14.5M</td></tr>
+    <tr><td>Lifeline Inc<br><span style="font-size:10px;color:var(--text3)">Washington, DC</span></td><td><a href="https://www.linkedin.com/search/results/all/?keywords=${encodeURIComponent('Rhoda Makinde Lifeline Inc Washington DC')}" target="_blank" style="color:var(--blue2)">Rhoda Makinde</a>, Director</td><td class="red">88.7</td><td>$12.2M</td></tr>
+    <tr><td>G B Cooley Hospital Services/PCA<br><span style="font-size:10px;color:var(--text3)">West Monroe, LA</span></td><td><a href="https://www.linkedin.com/search/results/all/?keywords=${encodeURIComponent('Jimmy Sanderlin G B Cooley Hospital')}" target="_blank" style="color:var(--blue2)">Jimmy Sanderlin</a>, Dir of Finance</td><td class="red">72.5</td><td>$14.9M</td></tr>
+    <tr><td>Crossroads LA Inc<br><span style="font-size:10px;color:var(--text3)">New Orleans, LA</span></td><td><a href="https://www.linkedin.com/search/results/all/?keywords=${encodeURIComponent('Beverly Duncan Crossroads LA New Orleans')}" target="_blank" style="color:var(--blue2)">Beverly Duncan</a>, Exec Dir</td><td class="red">69.0</td><td>$21.5M</td></tr>
+    <tr><td>New Outlook Inc<br><span style="font-size:10px;color:var(--text3)">Livonia, MI</span></td><td><a href="https://www.linkedin.com/search/results/all/?keywords=${encodeURIComponent('Carol Hepfinger New Outlook Inc Livonia')}" target="_blank" style="color:var(--blue2)">Carol Hepfinger</a>, Admin</td><td class="red">64.7</td><td>$17.6M</td></tr>
+    </tbody></table>`
+  }
+];
+
+const grid=document.getElementById('casesGrid');
+cases.forEach((c,i)=>{
+  const card=document.createElement('div');
+  card.className=`case-card ${c.severity} animate-in delay-${Math.min(i+1,5)}`;
+  card.innerHTML=`
+    <div class="case-severity ${c.severity}">${c.severity}</div>
+    <div class="case-title">${c.title}</div>
+    <div class="case-amount ${c.amountClass}">${c.amount}</div>
+    <div class="case-detail">${c.detail}</div>
+    <div>${c.metrics.map(m=>`<span class="case-metric ${m.cls}">${m.label}</span>`).join('')}</div>
+    <div class="case-expand"><div class="case-expand-inner">${c.expand}</div></div>
+  `;
+  card.addEventListener('click',()=>card.classList.toggle('open'));
+  grid.appendChild(card);
+});
+
+// ===== 5: REVENUE COMPARISONS =====
+(function buildRevenue(){
+  const container=document.getElementById('revenueComparisons');
+  revenueOutliers.forEach(proc=>{
+    const section=document.createElement('div');
+    section.className='chart-container mb-20 animate-in';
+    let html=`<div style="margin-bottom:16px">
+      <span class="mono" style="color:var(--gold);font-size:13px;font-weight:600">${proc.code}</span>
+      <span style="color:var(--text2);font-size:13px;margin-left:8px">${proc.desc}</span>
+      <span class="mono" style="color:var(--text3);font-size:11px;margin-left:12px">Median: $${proc.median.toFixed(2)}/claim</span>
+    </div>
+    <div class="bar-compare">`;
+    // Median bar
+    html+=`<div class="bar-row">
+      <div class="bar-label">MEDIAN</div>
+      <div class="bar-track"><div class="bar-fill normal" style="width:5%"><span class="bar-val">$${proc.median}</span></div></div>
+    </div>`;
+    // Outlier bars
+    const maxVal=Math.max(...proc.outliers.map(o=>o.perClaim));
+    proc.outliers.forEach(o=>{
+      const pct=Math.max(8,Math.min(100,(o.perClaim/maxVal)*95));
+      const ratio=Math.round(o.perClaim/proc.median);
+      const label=o.name||npiName(o.npi);
+      const shortLabel=label.length>20?label.slice(0,18)+'..':label;
+      html+=`<div class="bar-row">
+        <div class="bar-label" style="font-size:10px" title="${label} — ${npiOfficial(o.npi)}, ${npiTitle(o.npi)}">${shortLabel}</div>
+        <div class="bar-track"><div class="bar-fill outlier" style="width:${pct}%"><span class="bar-val">$${o.perClaim.toLocaleString()} (${ratio}x) &mdash; ${fmt(o.paid)}</span></div></div>
+      </div>`;
+    });
+    html+=`</div>`;
+    section.innerHTML=html;
+    container.appendChild(section);
+  });
+})();
+
+// ===== 6: CONCENTRATION DONUTS =====
+(function buildDonuts(){
+  const grid=document.getElementById('donutGrid');
+  concentrationData.forEach((d,i)=>{
+    const card=document.createElement('div');
+    card.className='donut-card animate-in';
+    card.style.animationDelay=(i*0.05)+'s';
+    const canvasId='donut'+i;
+    const official=npiOfficial(d.npi);
+    const liUrl=npiLinkedIn(d.npi);
+    card.innerHTML=`
+      <canvas id="${canvasId}" width="140" height="140"></canvas>
+      <div style="font-family:'DM Sans',sans-serif;font-size:12px;font-weight:600;margin-bottom:2px">${npiName(d.npi)}</div>
+      <div class="donut-npi">${npiCity(d.npi)}</div>
+      ${official?`<div style="margin-top:4px"><a href="${liUrl}" target="_blank" rel="noopener" style="font-size:10px;color:var(--blue2);text-decoration:none">${official}</a><span style="font-size:9px;color:var(--text3)"> — ${npiTitle(d.npi)}</span></div>`:''}
+      <div class="donut-pct red">${d.pct.toFixed(1)}%</div>
+      <div class="donut-code">${d.code} — ${hcpcsDesc[d.code]||d.code}</div>
+      <div class="donut-amount">${fmt(d.paid)} total</div>
+    `;
+    grid.appendChild(card);
+    setTimeout(()=>{
+      new Chart(document.getElementById(canvasId),{
+        type:'doughnut',
+        data:{
+          datasets:[{data:[d.pct,100-d.pct],backgroundColor:['rgba(255,59,48,.7)','rgba(42,42,52,.5)'],borderWidth:0}]
+        },
+        options:{
+          responsive:false,cutout:'75%',
+          plugins:{legend:{display:false},tooltip:{enabled:false}},
+          animation:{animateRotate:true,duration:1200}
+        }
+      });
+    },100);
+  });
+})();
+
+// ===== 7: VOLUME SPIKES CHART =====
+new Chart(document.getElementById('spikeChart'),{
+  type:'bar',
+  data:{
+    labels:volumeSpikes.map(d=>{const nm=npiName(d.npi);return nm.length>25?nm.slice(0,23)+'..':nm;}),
+    datasets:[
+      {
+        label:'Spike Amount',
+        data:volumeSpikes.map(d=>d.paid),
+        backgroundColor:volumeSpikes.map(d=>d.spike>50?'rgba(255,59,48,.6)':d.spike>10?'rgba(255,149,0,.5)':'rgba(255,214,10,.4)'),
+        borderColor:volumeSpikes.map(d=>d.spike>50?'rgba(255,59,48,.9)':d.spike>10?'rgba(255,149,0,.8)':'rgba(255,214,10,.7)'),
+        borderWidth:1,borderRadius:2
+      }
+    ]
+  },
+  options:{
+    responsive:true,maintainAspectRatio:false,
+    plugins:{
+      legend:{display:false},
+      tooltip:{
+        callbacks:{
+          title:ctx=>{const d=volumeSpikes[ctx[0].dataIndex];return `${npiName(d.npi)} (${d.month})`;},
+          label:ctx=>{const d=volumeSpikes[ctx.dataIndex];return [`NPI: ${d.npi}`,`Official: ${npiOfficial(d.npi)}`,`Spike month: ${fmt(d.paid)}`,`${d.spike.toFixed(0)}x their 6-month average`];}
+        },
+        backgroundColor:'#1a1a22',borderColor:'#2a2a34',borderWidth:1
+      }
+    },
+    scales:{
+      x:{grid:{display:false},ticks:{font:{size:9},maxRotation:45}},
+      y:{grid:{color:'rgba(42,42,52,.4)'},ticks:{callback:v=>fmt(v)}}
+    }
+  }
+});
+document.getElementById('spikeChart').parentElement.style.height='350px';
+
+// ===== 8: RISK TABLE =====
+(function buildTable(){
+  const tbody=document.getElementById('riskTableBody');
+  compositeScores.sort((a,b)=>b.score-a.score);
+  compositeScores.forEach((d,i)=>{
+    const riskClass=d.score>=80?'critical':d.score>=70?'high':'medium';
+    const riskLabel=d.score>=80?'CRITICAL':d.score>=70?'HIGH':'ELEVATED';
+    const barWidth=Math.round((d.score/90)*100);
+    const barColor=d.score>=65?'var(--red)':d.score>=58?'var(--orange)':'var(--yellow)';
+    const official=npiOfficial(d.npi);
+    const title=npiTitle(d.npi);
+    const liUrl=npiLinkedIn(d.npi);
+    const officialHtml=official?`<a href="${liUrl}" target="_blank" rel="noopener" style="color:var(--blue2);text-decoration:none;border-bottom:1px dotted var(--blue)" title="${title}">${official}</a><br><span style="font-size:9px;color:var(--text3)">${title}</span>`:'—';
+    const tr=document.createElement('tr');
+    tr.innerHTML=`
+      <td style="color:var(--text3)">${i+1}</td>
+      <td>${d.npi}</td>
+      <td style="white-space:normal;max-width:200px;font-family:'DM Sans',sans-serif;font-size:12px">${npiName(d.npi)}<br><span style="font-size:10px;color:var(--text3)">${npiCity(d.npi)}</span></td>
+      <td style="white-space:normal;max-width:160px;font-family:'DM Sans',sans-serif;font-size:11px">${officialHtml}</td>
+      <td><span class="risk-bar" style="width:${barWidth}px;background:${barColor}"></span> ${d.score}</td>
+      <td>${fmt(d.paid)}</td>
+      <td style="color:${d.cpb>30?'var(--red)':d.cpb>20?'var(--orange)':'var(--text)'}">${d.cpb}</td>
+      <td style="color:${d.conc>95?'var(--red)':d.conc>80?'var(--orange)':'var(--text)'}">${d.conc}%</td>
+      <td style="color:${d.spike>20?'var(--red)':d.spike>5?'var(--orange)':'var(--text)'}">${d.spike>100?fmtX(d.spike):d.spike.toFixed(1)+'x'}</td>
+      <td><span class="risk-badge ${riskClass}">${riskLabel}</span></td>
+    `;
+    tbody.appendChild(tr);
+  });
+
+  // Sorting
+  const headers=document.querySelectorAll('#riskTable th');
+  const cols=['rank','npi','name','official','score','paid','cpb','conc','spike','risk'];
+  const getVal=(row,col)=>{
+    const idx=cols.indexOf(col);
+    const text=row.children[idx].textContent.trim();
+    if(col==='npi'||col==='risk'||col==='name'||col==='official')return text;
+    return parseFloat(text.replace(/[^0-9.\-]/g,''))||0;
+  };
+  let sortCol='score',sortDir=-1;
+  headers.forEach(th=>{
+    th.addEventListener('click',()=>{
+      const col=th.dataset.col;
+      if(sortCol===col)sortDir*=-1;else{sortCol=col;sortDir=-1;}
+      headers.forEach(h=>h.classList.remove('sorted'));
+      th.classList.add('sorted');
+      const rows=[...tbody.querySelectorAll('tr')];
+      rows.sort((a,b)=>{
+        const va=getVal(a,col),vb=getVal(b,col);
+        if(typeof va==='string')return va.localeCompare(vb)*sortDir;
+        return (va-vb)*sortDir;
+      });
+      rows.forEach((r,i)=>{r.children[0].textContent=i+1;tbody.appendChild(r);});
+    });
+  });
+})();
+
+// ===== 9: MISMATCH CHART =====
+new Chart(document.getElementById('mismatchChart'),{
+  type:'bar',
+  data:{
+    labels:mismatchData.map(d=>{const nm=npiName(d.npi);return nm.length>22?nm.slice(0,20)+'..':nm;}),
+    datasets:[
+      {label:'Billing $',data:mismatchData.map(d=>d.billing),backgroundColor:'rgba(255,59,48,.5)',borderColor:'rgba(255,59,48,.8)',borderWidth:1,borderRadius:2},
+      {label:'Servicing $',data:mismatchData.map(d=>d.servicing),backgroundColor:'rgba(48,209,88,.5)',borderColor:'rgba(48,209,88,.8)',borderWidth:1,borderRadius:2}
+    ]
+  },
+  options:{
+    responsive:true,maintainAspectRatio:false,
+    plugins:{
+      legend:{labels:{font:{size:11},usePointStyle:true,pointStyle:'rect'}},
+      tooltip:{
+        callbacks:{
+          title:ctx=>{const d=mismatchData[ctx[0].dataIndex];return npiName(d.npi);},
+          afterBody:ctx=>{const d=mismatchData[ctx[0].dataIndex];return [`NPI: ${d.npi}`,`Official: ${npiOfficial(d.npi)}`,`Ratio: ${d.ratio.toLocaleString()}x`];}
+        },
+        backgroundColor:'#1a1a22',borderColor:'#2a2a34',borderWidth:1
+      }
+    },
+    scales:{
+      x:{grid:{display:false},ticks:{font:{size:9}}},
+      y:{type:'logarithmic',grid:{color:'rgba(42,42,52,.4)'},ticks:{callback:v=>fmt(v),font:{size:10}}}
+    }
+  }
+});
+document.getElementById('mismatchChart').parentElement.style.height='380px';
+
+// ===== 10: FRAUD BY STATE =====
+const stateData = [
+{st:"IL",n:7,paid:1412545560,avg:76.3,max:81.2,spec:"Ambulance / Home Health",conc:0.29,alert:""},
+{st:"MA",n:2,paid:1162197995,avg:80.4,max:82.1,spec:"Case Management",conc:0.50,alert:""},
+{st:"AZ",n:48,paid:1053627748,avg:76.9,max:84.6,spec:"Mental Health Clinics",conc:0.27,alert:"48 providers — largest cluster"},
+{st:"NJ",n:8,paid:1051298941,avg:81.3,max:83.7,spec:"Dev. Disabled Day Training",conc:0.63,alert:"HIGH"},
+{st:"NY",n:8,paid:814139062,avg:77.9,max:85.6,spec:"Home Health",conc:0.38,alert:""},
+{st:"MO",n:2,paid:667773308,avg:75.1,max:75.4,spec:"Transportation Broker",conc:0.50,alert:""},
+{st:"CA",n:30,paid:642158217,avg:77.6,max:84.1,spec:"ESRD Dialysis / Home Health",conc:0.47,alert:""},
+{st:"PA",n:12,paid:515409369,avg:78.0,max:81.1,spec:"Home Health",conc:0.67,alert:"HIGH"},
+{st:"TX",n:4,paid:440004014,avg:78.4,max:80.8,spec:"Mixed",conc:0.25,alert:""},
+{st:"FL",n:7,paid:320187827,avg:78.5,max:82.5,spec:"Mixed",conc:0.14,alert:""},
+{st:"MI",n:3,paid:317730235,avg:81.1,max:82.7,spec:"Dev. Disabled / Emergency",conc:0.33,alert:""},
+{st:"DE",n:1,paid:315865302,avg:75.6,max:75.6,spec:"Dev. Disabilities Psych",conc:1.0,alert:""},
+{st:"HI",n:18,paid:272018032,avg:76.3,max:79.6,spec:"ESRD Dialysis",conc:0.89,alert:"VERY HIGH"},
+{st:"TN",n:4,paid:211669821,avg:78.3,max:81.2,spec:"Psych Residential",conc:0.50,alert:"MODERATE"},
+{st:"PR",n:1,paid:188981224,avg:81.9,max:81.9,spec:"Specialty Pharmacy",conc:1.0,alert:""},
+{st:"OH",n:1,paid:140711422,avg:77.2,max:77.2,spec:"Special Hospital",conc:1.0,alert:""},
+{st:"RI",n:2,paid:138998355,avg:77.9,max:81.3,spec:"In Home Supportive Care",conc:0.50,alert:""},
+{st:"VA",n:5,paid:126604163,avg:77.9,max:79.7,spec:"Community Behavioral Health",conc:0.40,alert:""},
+{st:"UT",n:5,paid:114375302,avg:78.5,max:84.0,spec:"Education / Home Health",conc:0.40,alert:""},
+{st:"WV",n:2,paid:113640790,avg:74.6,max:75.0,spec:"Behavioral Health / FQHC",conc:0.50,alert:""},
+{st:"AK",n:3,paid:100000551,avg:76.1,max:80.2,spec:"FQHC / Behavioral Health",conc:0.33,alert:""},
+{st:"WA",n:2,paid:91270897,avg:78.6,max:80.5,spec:"Substance Abuse / Mental Health",conc:0.50,alert:""},
+{st:"MD",n:2,paid:83438801,avg:80.0,max:84.5,spec:"Home Health",conc:1.0,alert:"VERY HIGH"},
+{st:"NH",n:3,paid:72057411,avg:76.2,max:79.7,spec:"Residential / Behavioral",conc:0.33,alert:""},
+{st:"WI",n:1,paid:59934661,avg:75.7,max:75.7,spec:"HMO",conc:1.0,alert:""},
+{st:"AR",n:2,paid:55600376,avg:82.0,max:83.8,spec:"Speech-Lang / Dev. Disabled",conc:0.50,alert:""},
+{st:"KY",n:1,paid:52838017,avg:76.1,max:76.1,spec:"Rehabilitation Hospital",conc:1.0,alert:""},
+{st:"ME",n:1,paid:41957610,avg:80.9,max:80.9,spec:"Residential Treatment",conc:1.0,alert:""},
+{st:"CO",n:4,paid:39702207,avg:78.7,max:80.6,spec:"Mixed (In-home, Taxi, Psych)",conc:0.25,alert:""},
+{st:"DC",n:1,paid:30729464,avg:79.0,max:79.0,spec:"Bus Transportation",conc:1.0,alert:""},
+{st:"LA",n:1,paid:29655069,avg:77.3,max:77.3,spec:"Transportation Broker",conc:1.0,alert:""},
+{st:"VT",n:1,paid:25403473,avg:77.0,max:77.0,spec:"Children Mental Health",conc:1.0,alert:"SEE CASE STUDY"},
+{st:"NV",n:1,paid:11571163,avg:78.1,max:78.1,spec:"Behavior Analyst",conc:1.0,alert:""},
+{st:"IN",n:1,paid:6101749,avg:76.0,max:76.0,spec:"Behavior Analyst",conc:1.0,alert:""},
+{st:"MN",n:1,paid:5953555,avg:76.5,max:76.5,spec:"Home Health",conc:1.0,alert:""},
+{st:"NM",n:1,paid:4231670,avg:76.9,max:76.9,spec:"Dev. Disabilities Residential",conc:1.0,alert:""},
+];
+
+// State bar chart — filterable
+const stateColorFor = d => {
+  if(d.alert==='VERY HIGH') return {bg:'rgba(255,59,48,.7)',border:'rgba(255,59,48,.9)'};
+  if(d.alert==='HIGH') return {bg:'rgba(255,149,0,.6)',border:'rgba(255,149,0,.8)'};
+  if(d.alert && d.alert!=='') return {bg:'rgba(255,214,10,.5)',border:'rgba(255,214,10,.7)'};
+  return {bg:'rgba(200,168,78,.4)',border:'rgba(200,168,78,.6)'};
+};
+const stateFilterMap = {
+  'all': ()=>true,
+  'very-high': d=>d.alert==='VERY HIGH',
+  'high': d=>d.alert==='HIGH',
+  'flagged': d=>d.alert!=='' && d.alert!=='VERY HIGH' && d.alert!=='HIGH',
+};
+let stateChart = null;
+let currentStateFilter = 'all';
+function renderStateChart(filter){
+  currentStateFilter=filter;
+  const filtered=stateData.filter(stateFilterMap[filter]);
+  if(stateChart) stateChart.destroy();
+  const canvas=document.getElementById('stateBarChart');
+  const h=Math.max(300,filtered.length*30+60);
+  canvas.parentElement.style.height=h+'px';
+  stateChart=new Chart(canvas,{
+    type:'bar',
+    data:{
+      labels:filtered.map(d=>d.st),
+      datasets:[{
+        label:'Suspicious $',
+        data:filtered.map(d=>d.paid),
+        backgroundColor:filtered.map(d=>stateColorFor(d).bg),
+        borderColor:filtered.map(d=>stateColorFor(d).border),
+        borderWidth:1,borderRadius:2
+      }]
+    },
+    options:{
+      indexAxis:'y',responsive:true,maintainAspectRatio:false,
+      animation:{duration:400},
+      plugins:{
+        legend:{display:false},
+        tooltip:{
+          callbacks:{
+            label:ctx=>{const d=filtered[ctx.dataIndex];return [`${fmt(d.paid)} suspicious`,`${d.n} providers flagged`,`Avg score: ${d.avg}`,`Top specialty: ${d.spec}`,d.alert?`Alert: ${d.alert}`:''];}
+          },
+          backgroundColor:'#1a1a22',borderColor:'#2a2a34',borderWidth:1
+        }
+      },
+      scales:{
+        x:{grid:{color:'rgba(42,42,52,.3)'},ticks:{callback:v=>fmt(v),font:{size:10}}},
+        y:{grid:{display:false},ticks:{font:{size:11,weight:'bold'}}}
+      }
+    }
+  });
+}
+renderStateChart('all');
+document.querySelectorAll('#stateFilterTabs .nav-tab').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    document.querySelectorAll('#stateFilterTabs .nav-tab').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    renderStateChart(btn.dataset.filter);
+  });
+});
+
+// Alert cards for concentrated-specialty states
+(function buildStateAlerts(){
+  const container=document.getElementById('stateAlertCards');
+  const alerts=[
+    {st:'HI',level:'VERY HIGH',n:18,spec:'ESRD Dialysis Centers',specN:16,pct:89,paid:272018032,
+     detail:'16 of 18 flagged providers are dialysis clinics. Most share the same authorized official (Thomas Weinberg / Barry Blanton). Suggests systemic dialysis billing anomaly.'},
+    {st:'NJ',level:'HIGH',n:8,spec:'Dev. Disability Day Training',specN:5,pct:63,paid:1051298941,
+     detail:'5 of 8 flagged NJ providers are in developmental disability services. Highest avg composite score (81.3) of any state with 5+ providers.'},
+    {st:'PA',level:'HIGH',n:12,spec:'Home Health Agencies',specN:8,pct:67,paid:515409369,
+     detail:'8 of 12 flagged PA providers are home health agencies. Multiple share authorized official David Baiada (President/CEO).'},
+    {st:'MD',level:'VERY HIGH',n:2,spec:'Home Health',specN:2,pct:100,paid:83438801,
+     detail:'Both flagged MD providers are home health in Silver Spring/Greenbelt corridor. Top score 84.5.'},
+    {st:'VT',level:'CASE STUDY',n:'6+',spec:'Dev. Disabilities (Code 99199)',specN:6,pct:100,paid:742000000,
+     detail:'Six VT developmental disability orgs bill code 99199 at $5,700-$7,400/claim (median $5.31). Combined $742M+ — see Case Study #2 above.'},
+  ];
+  alerts.forEach(a=>{
+    const levelColor=a.level==='VERY HIGH'?'var(--red)':a.level==='HIGH'?'var(--orange)':'var(--yellow)';
+    const levelBg=a.level==='VERY HIGH'?'var(--red-dim)':a.level==='HIGH'?'var(--orange-dim)':'var(--yellow-dim)';
+    const card=document.createElement('div');
+    card.style.cssText=`padding:14px 16px;border-left:3px solid ${levelColor};background:${levelBg};border-radius:0 4px 4px 0;margin-bottom:10px;cursor:pointer;transition:all .2s`;
+    card.innerHTML=`
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+        <span style="font-family:'Space Grotesk',sans-serif;font-size:1.1rem;font-weight:700">${a.st}</span>
+        <span style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:1.5px;padding:2px 6px;border-radius:2px;background:${levelBg};color:${levelColor};border:1px solid ${levelColor}">${a.level}</span>
+      </div>
+      <div style="font-family:'JetBrains Mono',monospace;font-size:12px;color:${levelColor};font-weight:600;margin-bottom:6px">${fmt(a.paid)}</div>
+      <div style="font-size:12px;color:var(--text2);margin-bottom:6px"><strong>${a.specN}/${a.n}</strong> providers (${a.pct}%) in <strong>${a.spec}</strong></div>
+      <div class="case-expand" style="max-height:0;overflow:hidden;transition:max-height .3s ease">
+        <div style="font-size:12px;color:var(--text2);padding-top:8px;border-top:1px solid var(--border)">${a.detail}</div>
+      </div>
+    `;
+    card.addEventListener('click',()=>{
+      const expand=card.querySelector('.case-expand');
+      if(expand.style.maxHeight==='0px'){expand.style.maxHeight='200px';}else{expand.style.maxHeight='0px';}
+    });
+    container.appendChild(card);
+  });
+})();
+
+// Per-provider average chart (top 15 states with 2+ providers)
+const stateMulti=stateData.filter(d=>d.n>=2).sort((a,b)=>(b.paid/b.n)-(a.paid/a.n)).slice(0,15);
+new Chart(document.getElementById('stateAvgChart'),{
+  type:'bar',
+  data:{
+    labels:stateMulti.map(d=>d.st),
+    datasets:[{
+      label:'Avg $ per Provider',
+      data:stateMulti.map(d=>Math.round(d.paid/d.n)),
+      backgroundColor:stateMulti.map(d=>{
+        const avg=d.paid/d.n;
+        if(avg>300e6) return 'rgba(255,59,48,.6)';
+        if(avg>100e6) return 'rgba(255,149,0,.5)';
+        return 'rgba(200,168,78,.4)';
+      }),
+      borderColor:stateMulti.map(d=>{
+        const avg=d.paid/d.n;
+        if(avg>300e6) return 'rgba(255,59,48,.8)';
+        if(avg>100e6) return 'rgba(255,149,0,.7)';
+        return 'rgba(200,168,78,.6)';
+      }),
+      borderWidth:1,borderRadius:2
+    }]
+  },
+  options:{
+    responsive:true,maintainAspectRatio:false,
+    plugins:{
+      legend:{display:false},
+      tooltip:{
+        callbacks:{
+          label:ctx=>{const d=stateMulti[ctx.dataIndex];return [`${fmt(Math.round(d.paid/d.n))} avg per provider`,`${d.n} providers total`,`${fmt(d.paid)} total suspicious`];}
+        },
+        backgroundColor:'#1a1a22',borderColor:'#2a2a34',borderWidth:1
+      }
+    },
+    scales:{
+      x:{grid:{display:false},ticks:{font:{size:10}}},
+      y:{grid:{color:'rgba(42,42,52,.3)'},ticks:{callback:v=>fmt(v),font:{size:10}}}
+    }
+  }
+});
+document.getElementById('stateAvgChart').parentElement.style.height='260px';
+
+// State table with sorting
+(function buildStateTable(){
+  const tbody=document.getElementById('stateTableBody');
+  const alertOrder={'VERY HIGH':4,'HIGH':3,'MODERATE':2,'SEE CASE STUDY':2,'48 providers — largest cluster':1,'':0};
+  let sortedData=[...stateData];
+  let stSortCol='paid',stSortDir=-1;
+
+  function renderStateRows(){
+    tbody.innerHTML='';
+    sortedData.forEach((d,i)=>{
+      const alertClass=d.alert==='VERY HIGH'?'critical':d.alert==='HIGH'?'high':d.alert?'medium':'';
+      const alertLabel=d.alert||'—';
+      const concPct=Math.round(d.conc*100);
+      const concColor=concPct>=80?'var(--red)':concPct>=50?'var(--orange)':'var(--text)';
+      const tr=document.createElement('tr');
+      if(d.alert==='VERY HIGH') tr.style.background='rgba(255,59,48,.04)';
+      else if(d.alert==='HIGH') tr.style.background='rgba(255,149,0,.03)';
+      tr.innerHTML=`
+        <td style="color:var(--text3)">${i+1}</td>
+        <td style="font-weight:700;font-size:13px">${d.st}</td>
+        <td style="color:${d.n>=10?'var(--red)':d.n>=5?'var(--orange)':'var(--text)'}">${d.n}</td>
+        <td style="color:var(--gold)">${fmt(d.paid)}</td>
+        <td style="color:${d.avg>=80?'var(--red)':d.avg>=77?'var(--orange)':'var(--text)'}">${d.avg.toFixed(1)}</td>
+        <td style="color:${d.max>=82?'var(--red)':d.max>=78?'var(--orange)':'var(--text)'}">${d.max.toFixed(1)}</td>
+        <td style="white-space:normal;max-width:200px;font-family:'DM Sans',sans-serif;font-size:11px">${d.spec}</td>
+        <td style="color:${concColor}">${concPct}%</td>
+        <td>${d.alert?`<span class="risk-badge ${alertClass}" style="font-size:9px">${alertLabel}</span>`:'—'}</td>
+      `;
+      tbody.appendChild(tr);
+    });
+  }
+
+  function sortStateBy(col,dir){
+    sortedData.sort((a,b)=>{
+      let va,vb;
+      switch(col){
+        case 'rank': va=stateData.indexOf(a);vb=stateData.indexOf(b);break;
+        case 'state': va=a.st;vb=b.st;break;
+        case 'providers': va=a.n;vb=b.n;break;
+        case 'paid': va=a.paid;vb=b.paid;break;
+        case 'avg': va=a.avg;vb=b.avg;break;
+        case 'max': va=a.max;vb=b.max;break;
+        case 'specialty': va=a.spec;vb=b.spec;break;
+        case 'conc': va=a.conc;vb=b.conc;break;
+        case 'alert': va=alertOrder[a.alert]||0;vb=alertOrder[b.alert]||0;break;
+        default: va=0;vb=0;
+      }
+      if(typeof va==='string') return va.localeCompare(vb)*dir;
+      return (va-vb)*dir;
+    });
+    renderStateRows();
+  }
+
+  renderStateRows();
+
+  const stHeaders=document.querySelectorAll('#stateTable th');
+  stHeaders.forEach(th=>{
+    th.addEventListener('click',()=>{
+      const col=th.dataset.col;
+      if(stSortCol===col) stSortDir*=-1; else {stSortCol=col;stSortDir=-1;}
+      stHeaders.forEach(h=>h.classList.remove('sorted'));
+      th.classList.add('sorted');
+      sortStateBy(col,stSortDir);
+    });
+  });
+})();
+
+// Intersection observer for animations
+const observer=new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{if(e.isIntersecting)e.target.style.animationPlayState='running';});
+},{threshold:0.1});
+document.querySelectorAll('.animate-in').forEach(el=>{
+  el.style.animationPlayState='paused';
+  observer.observe(el);
+});
+</script>
+</body>
+</html>
